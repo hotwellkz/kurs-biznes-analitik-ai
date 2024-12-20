@@ -1,15 +1,15 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Play, Pause } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { LessonContent } from '@/components/lesson/LessonContent';
 import { LessonTest } from '@/components/lesson/LessonTest';
+import { LessonHeader } from '@/components/lesson/LessonHeader';
+import { LessonControls } from '@/components/lesson/LessonControls';
+import { Button } from '@/components/ui/button';
 
 const Lesson = () => {
   const { lessonId } = useParams();
@@ -17,11 +17,9 @@ const Lesson = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState('');
-  const [userQuestion, setUserQuestion] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVoiceControls, setShowVoiceControls] = useState(false);
   const [tokens, setTokens] = useState<number | null>(null);
-  const speechSynthesisRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -161,32 +159,26 @@ const Lesson = () => {
     }
   };
 
-return (
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      window.speechSynthesis.pause();
+    } else {
+      window.speechSynthesis.resume();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
     <div className="min-h-screen flex flex-col bg-[#0A0A0A]">
       <Navigation />
       <Breadcrumbs />
       
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto space-y-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 animate-fade-in">
-            Урок 1.1: Кто такой бизнес-аналитик?
-          </h1>
-
-          <Button
-            id="start-lesson-button"
-            onClick={startLesson}
-            disabled={isLoading}
-            className="bg-primary hover:bg-primary-hover text-white px-8 py-4 text-lg"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Готовлю урок...
-              </>
-            ) : (
-              'Начать урок'
-            )}
-          </Button>
+          <LessonHeader 
+            isLoading={isLoading}
+            onStartLesson={startLesson}
+          />
 
           {content && (
             <>
@@ -199,31 +191,10 @@ return (
               />
 
               {showVoiceControls && (
-                <div className="flex gap-4">
-                  <Button
-                    onClick={() => {
-                      if (isPlaying) {
-                        window.speechSynthesis.pause();
-                      } else {
-                        window.speechSynthesis.resume();
-                      }
-                      setIsPlaying(!isPlaying);
-                    }}
-                    variant="outline"
-                  >
-                    {isPlaying ? (
-                      <>
-                        <Pause className="w-4 h-4 mr-2" />
-                        Пауза
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-4 h-4 mr-2" />
-                        Продолжить
-                      </>
-                    )}
-                  </Button>
-                </div>
+                <LessonControls 
+                  isPlaying={isPlaying}
+                  onPlayPause={handlePlayPause}
+                />
               )}
 
               <div className="prose prose-invert max-w-none">
