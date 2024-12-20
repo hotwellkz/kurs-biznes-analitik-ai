@@ -124,37 +124,49 @@ export const UserManagement = () => {
   };
 
   if (loading) {
-    return <div className="text-center text-white">Загрузка...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-white text-xl animate-pulse">Загрузка...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Управление пользователями</h2>
-      <div className="overflow-x-auto">
+    <div className="space-y-8 p-6 rounded-lg bg-gradient-to-br from-gray-900 to-gray-800 shadow-xl animate-fade-in">
+      <div className="space-y-2">
+        <h2 className="text-3xl font-bold text-white tracking-tight">Управление пользователями</h2>
+        <p className="text-gray-400">Всего пользователей: {users.length}</p>
+      </div>
+      
+      <div className="overflow-x-auto rounded-lg border border-gray-800 shadow-md">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Email</TableHead>
-              <TableHead>Токены</TableHead>
-              <TableHead>Действия</TableHead>
+            <TableRow className="bg-gray-900/50">
+              <TableHead className="text-gray-300 font-medium">Email</TableHead>
+              <TableHead className="text-gray-300 font-medium">Токены</TableHead>
+              <TableHead className="text-gray-300 font-medium">Действия</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="text-white">{user.email}</TableCell>
+              <TableRow 
+                key={user.id}
+                className="transition-colors hover:bg-gray-800/50"
+              >
+                <TableCell className="text-white font-medium">{user.email}</TableCell>
                 <TableCell>
                   <Input
                     type="number"
                     value={user.tokens}
                     onChange={(e) => handleUpdateTokens(user.id, parseInt(e.target.value))}
-                    className="w-24 bg-secondary text-white"
+                    className="w-24 bg-gray-800 border-gray-700 text-white focus:ring-primary focus:border-primary transition-all"
                   />
                 </TableCell>
                 <TableCell>
                   <Button
                     variant="destructive"
                     onClick={() => handleDeleteUser(user.id)}
+                    className="hover:bg-red-600 transition-colors"
                   >
                     Удалить
                   </Button>
