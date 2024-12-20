@@ -15,7 +15,7 @@ export const ShareButton = ({ content }: ShareButtonProps) => {
     <Button
       onClick={shareOnWhatsApp}
       variant="outline"
-      className="border-primary/20 hover:bg-primary/5 text-primary-light"
+      className="border-primary/20 hover:bg-primary/5 text-secondary"
     >
       <Share2 className="w-4 h-4 mr-2" />
       Поделиться в WhatsApp

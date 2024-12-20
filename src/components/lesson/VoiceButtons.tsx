@@ -20,7 +20,7 @@ export const VoiceButtons = ({
         onClick={onPlayFreeVoice}
         disabled={isVoiceLoading || isPlaying}
         variant="outline"
-        className="border-primary/20 hover:bg-primary/5 text-primary-light"
+        className="border-primary/20 hover:bg-primary/5 text-secondary"
       >
         {isVoiceLoading ? (
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
