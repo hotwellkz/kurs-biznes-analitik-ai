@@ -34,10 +34,22 @@ export const UserManagement = () => {
         .from('profiles')
         .select('*');
 
-      const { data: authData, error: authError } = await supabase.auth.admin.listUsers();
-      const authUsers = authData?.users as AuthUser[] || [];
+      // Call the Edge Function with admin password
+      const { data, error } = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ password: '1888' })
+        }
+      ).then(res => res.json());
 
-      if (profilesError || authError) throw new Error('Failed to fetch users');
+      if (error || profilesError) throw new Error('Failed to fetch users');
+
+      const authUsers = data?.users as AuthUser[] || [];
 
       const combinedUsers = profiles?.map(profile => {
         const authUser = authUsers.find(u => u.id === profile.id);
@@ -90,14 +102,23 @@ export const UserManagement = () => {
 
   const handleDeleteUser = async (userId: string) => {
     try {
-      const { error: authError } = await supabase.auth.admin.deleteUser(userId);
-      if (authError) throw authError;
+      // Call the Edge Function to delete the user
+      const { error } = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ 
+            password: '1888',
+            userId: userId 
+          })
+        }
+      ).then(res => res.json());
 
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .delete()
-        .eq('id', userId);
-      if (profileError) throw profileError;
+      if (error) throw error;
 
       toast({
         title: "Успешно",
