@@ -19,7 +19,26 @@ const testQuestions = [
     ],
     correctAnswer: 1
   },
-  // Add more questions here
+  {
+    question: "Какой навык наиболее важен для бизнес-аналитика?",
+    options: [
+      "Программирование",
+      "Аналитическое мышление",
+      "Продажи",
+      "Дизайн"
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: "Что является основным результатом работы бизнес-аналитика?",
+    options: [
+      "Написанный код",
+      "Техническая документация",
+      "Требования к продукту",
+      "Маркетинговые материалы"
+    ],
+    correctAnswer: 2
+  }
 ];
 
 export const LessonTest = () => {
@@ -29,19 +48,27 @@ export const LessonTest = () => {
   const { toast } = useToast();
 
   const handleAnswer = (answerIndex: number) => {
-    if (answerIndex === testQuestions[currentQuestion].correctAnswer) {
+    const isCorrect = answerIndex === testQuestions[currentQuestion].correctAnswer;
+    
+    if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    if (currentQuestion < testQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+    const nextQuestion = currentQuestion + 1;
+
+    if (nextQuestion < testQuestions.length) {
+      setCurrentQuestion(nextQuestion);
     } else {
-      const finalScore = Math.round((score / testQuestions.length) * 10);
+      // Вычисляем финальную оценку только когда все вопросы отвечены
+      const finalScore = Math.round((score + (isCorrect ? 1 : 0)) / testQuestions.length * 10);
       toast({
         title: "Тест завершен!",
         description: `Ваша оценка: ${finalScore}/10`,
       });
       setIsOpen(false);
+      // Сбрасываем состояние для следующей попытки
+      setCurrentQuestion(0);
+      setScore(0);
     }
   };
 
@@ -68,23 +95,24 @@ export const LessonTest = () => {
             </DialogTitle>
           </DialogHeader>
           
-          {currentQuestion < testQuestions.length && (
-            <div className="space-y-4">
-              <p className="text-lg">{testQuestions[currentQuestion].question}</p>
-              <div className="space-y-2">
-                {testQuestions[currentQuestion].options.map((option, index) => (
-                  <Button
-                    key={index}
-                    onClick={() => handleAnswer(index)}
-                    className="w-full justify-start text-left"
-                    variant="outline"
-                  >
-                    {option}
-                  </Button>
-                ))}
-              </div>
+          <div className="space-y-4">
+            <p className="text-lg font-medium">
+              Вопрос {currentQuestion + 1} из {testQuestions.length}
+            </p>
+            <p className="text-lg">{testQuestions[currentQuestion].question}</p>
+            <div className="space-y-2">
+              {testQuestions[currentQuestion].options.map((option, index) => (
+                <Button
+                  key={index}
+                  onClick={() => handleAnswer(index)}
+                  className="w-full justify-start text-left"
+                  variant="outline"
+                >
+                  {option}
+                </Button>
+              ))}
             </div>
-          )}
+          </div>
         </DialogContent>
       </Dialog>
     </>
