@@ -5,28 +5,41 @@ import { Breadcrumbs } from "../components/Breadcrumbs";
 import { Chat } from "../components/Chat";
 import { ModuleAccordion } from "../components/program/ModuleAccordion";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Program = () => {
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchCompletedLessons = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
 
-      const { data } = await supabase
-        .from('lesson_progress')
-        .select('lesson_id')
-        .eq('user_id', session.user.id)
-        .eq('completed', true);
+        const { data, error } = await supabase
+          .from('lesson_progress')
+          .select('lesson_id')
+          .eq('user_id', session.user.id)
+          .eq('completed', true);
 
-      if (data) {
-        setCompletedLessons(data.map(item => item.lesson_id));
+        if (error) throw error;
+
+        if (data) {
+          setCompletedLessons(data.map(item => item.lesson_id));
+        }
+      } catch (error) {
+        console.error('Error fetching completed lessons:', error);
+        toast({
+          title: "Ошибка",
+          description: "Не удалось загрузить прогресс уроков",
+          variant: "destructive",
+        });
       }
     };
 
     fetchCompletedLessons();
-  }, []);
+  }, [toast]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0A0A0A]">
