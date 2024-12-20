@@ -60,7 +60,7 @@ export const useLesson = (lessonId: string) => {
             setContent(lessonProgress.generated_content);
           }
           if (lessonProgress.questions_answers) {
-            const qaArray = lessonProgress.questions_answers as Array<QuestionAnswer>;
+            const qaArray = lessonProgress.questions_answers as Array<{ question: string; answer: string }>;
             if (Array.isArray(qaArray) && qaArray.every(qa => 'question' in qa && 'answer' in qa)) {
               setQuestionsAnswers(qaArray);
             }
