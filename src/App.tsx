@@ -15,6 +15,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/program" element={<Index />} />
+          <Route path="/privacy" element={<Index />} />
+          <Route path="/terms" element={<Index />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
