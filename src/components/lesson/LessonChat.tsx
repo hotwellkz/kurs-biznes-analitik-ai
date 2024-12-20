@@ -81,7 +81,10 @@ export const LessonChat = ({ lessonId, tokens, setTokens }: LessonChatProps) => 
         .eq('lesson_id', lessonId)
         .single();
 
-      const existingQA = lessonProgress?.questions_answers || [];
+      const existingQA = Array.isArray(lessonProgress?.questions_answers) 
+        ? lessonProgress.questions_answers as Array<{ question: string; answer: string }>
+        : [];
+      
       const updatedQA = [...existingQA, { question: questionToAsk, answer }];
 
       // Update the lesson progress with new Q&A
