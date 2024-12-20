@@ -1,84 +1,95 @@
 import { useState } from 'react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { ScrollArea } from './ui/scroll-area';
-import { Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Loader2 } from "lucide-react";
 
 export const Chat = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
+  const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-
+  const askQuestion = async () => {
     try {
-      setIsLoading(true);
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
         toast({
           title: "Требуется авторизация",
-          description: "Пожалуйста, войдите в систему чтобы использовать чат",
+          description: "Пожалуйста, войдите в систему",
           variant: "destructive",
         });
         return;
       }
 
+      // Get current tokens
       const { data: profile } = await supabase
         .from('profiles')
         .select('tokens')
         .eq('id', session.user.id)
         .single();
 
-      if (!profile || profile.tokens < 1) {
+      if (!profile || profile.tokens < 5) {
         toast({
           title: "Недостаточно токенов",
-          description: "Для использования чата необходим минимум 1 токен",
+          description: "Для вопроса требуется 5 токенов",
           variant: "destructive",
         });
         return;
       }
 
-      const userMessage: Message = { role: 'user', content: input };
-      setMessages(prevMessages => [...prevMessages, userMessage]);
-      setInput('');
+      setIsLoading(true);
+
+      // Deduct tokens
+      const { data: updatedProfile } = await supabase
+        .from('profiles')
+        .update({ tokens: profile.tokens - 5 })
+        .eq('id', session.user.id)
+        .select()
+        .single();
 
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
-          messages: [...messages, userMessage],
+          messages: [
+            {
+              role: 'system',
+              content: 'Ты - опытный преподаватель бизнес-анализа. Твоя задача - подробно и структурированно отвечать на вопросы студентов, используя практические примеры.'
+            },
+            {
+              role: 'user',
+              content: question
+            }
+          ]
         }
       });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: data.choices[0].message.content
-      };
+      const answer = data.choices[0].message.content;
 
-      // Уменьшаем количество токенов
-      await supabase
-        .from('profiles')
-        .update({ tokens: profile.tokens - 1 })
-        .eq('id', session.user.id);
+      // Store the Q&A in the database
+      const { data: chatHistory } = await supabase
+        .from('chat_history')
+        .insert([
+          {
+            user_id: session.user.id,
+            question,
+            answer
+          }
+        ])
+        .select();
 
-      setMessages(prevMessages => [...prevMessages, assistantMessage]);
+      // Reload the page to show the new answer
+      window.location.reload();
+
+      setQuestion('');
+
     } catch (error) {
       console.error('Error:', error);
       toast({
         title: "Ошибка",
-        description: "Не удалось отправить сообщение",
+        description: "Не удалось получить ответ",
         variant: "destructive",
       });
     } finally {
@@ -87,40 +98,20 @@ export const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-[500px] bg-secondary/50 rounded-lg p-4">
-      <ScrollArea className="flex-grow mb-4">
-        <div className="space-y-4">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`p-3 rounded-lg ${
-                message.role === 'user'
-                  ? 'bg-primary text-white ml-auto'
-                  : 'bg-secondary text-white'
-              } max-w-[80%] ${message.role === 'user' ? 'ml-auto' : 'mr-auto'}`}
-            >
-              {message.content}
-            </div>
-          ))}
-        </div>
-      </ScrollArea>
-      <div className="flex gap-2">
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Задайте вопрос..."
-          className="flex-grow"
-          disabled={isLoading}
-        />
-        <Button 
-          onClick={sendMessage} 
-          disabled={isLoading}
-          className="bg-primary hover:bg-primary-hover"
-        >
-          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Отправить'}
-        </Button>
-      </div>
+    <div className="flex flex-col sm:flex-row gap-4">
+      <Input
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+        placeholder="Задайте вопрос по материалам курса..."
+        className="flex-grow bg-secondary/30 backdrop-blur-sm text-white border-primary/20 focus:border-primary/40 rounded-xl"
+      />
+      <Button
+        onClick={askQuestion}
+        disabled={isLoading || !question}
+        className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-hover text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70"
+      >
+        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Спросить'}
+      </Button>
     </div>
   );
 };
