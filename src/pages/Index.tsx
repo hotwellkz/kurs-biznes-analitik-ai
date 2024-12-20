@@ -1,4 +1,4 @@
-import { Brain, Upload, Mic, ArrowRight, BookOpen, Users, HelpCircle } from "lucide-react";
+import { Brain, Upload, Mic, ArrowRight, BookOpen, Users, HelpCircle, ArrowRight as PlayIcon, Gift, Play } from "lucide-react";
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { SuitableFor } from "@/components/home/SuitableFor";
 import { Reviews } from "@/components/home/Reviews";
+import { StartLearning } from "@/components/home/StartLearning";
 
 const faqItems = [
   {
@@ -184,6 +185,9 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        {/* Start Learning Now Section */}
+        <StartLearning />
 
         {/* Кому подходит обучение */}
         <SuitableFor />
