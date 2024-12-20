@@ -59,7 +59,11 @@ export const Navigation = () => {
       title: "Выход выполнен успешно",
       description: "Вы успешно вышли из системы",
     });
-    navigate('/');
+    if (location.pathname.includes('/lesson/')) {
+      navigate('/program');
+    } else {
+      navigate('/');
+    }
   };
 
   const openAuth = (mode: 'sign_in' | 'sign_up') => {

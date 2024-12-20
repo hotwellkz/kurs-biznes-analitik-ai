@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showGiftModal, setShowGiftModal] = useState(false);
+  const message = location.state?.message;
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -38,6 +41,13 @@ const Register = () => {
             Вернуться на главную
           </Link>
         </div>
+        {message && (
+          <Alert>
+            <AlertDescription>
+              {message}
+            </AlertDescription>
+          </Alert>
+        )}
         <div className="bg-secondary p-8 rounded-lg">
           <h2 className="text-2xl font-bold text-white mb-6 text-center">Регистрация</h2>
           <Auth

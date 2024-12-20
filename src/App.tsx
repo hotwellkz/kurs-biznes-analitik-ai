@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { RequireAuth } from "./components/RequireAuth";
 import Index from "./pages/Index";
 import Program from "./pages/Program";
 import Login from "./pages/Login";
@@ -50,7 +51,14 @@ const App = () => (
           <Route path="/program" element={<Program />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/lesson/:lessonId" element={<Lesson />} />
+          <Route 
+            path="/lesson/:lessonId" 
+            element={
+              <RequireAuth>
+                <Lesson />
+              </RequireAuth>
+            } 
+          />
           <Route path="/privacy" element={<Index />} />
           <Route path="/terms" element={<Index />} />
         </Routes>
