@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer";
 import { Breadcrumbs } from "../components/Breadcrumbs";
-import { useEffect } from "react";
 import { Chat } from "../components/Chat";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Accordion,
   AccordionContent,
