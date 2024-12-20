@@ -15,6 +15,7 @@ import Pricing from "./pages/Pricing";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Admin from "./pages/Admin";
+import NotFound from "./pages/NotFound";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -67,6 +68,7 @@ const App = () => (
               </RequireAuth>
             } 
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
