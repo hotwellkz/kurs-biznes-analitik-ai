@@ -18,6 +18,11 @@ interface User {
   tokens: number;
 }
 
+interface AuthUser {
+  id: string;
+  email?: string;
+}
+
 export const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,12 +34,13 @@ export const UserManagement = () => {
         .from('profiles')
         .select('*');
 
-      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+      const { data: authData, error: authError } = await supabase.auth.admin.listUsers();
+      const authUsers = authData?.users as AuthUser[] || [];
 
       if (profilesError || authError) throw new Error('Failed to fetch users');
 
       const combinedUsers = profiles?.map(profile => {
-        const authUser = authUsers?.users.find(u => u.id === profile.id);
+        const authUser = authUsers.find(u => u.id === profile.id);
         return {
           id: profile.id,
           email: authUser?.email || '',
