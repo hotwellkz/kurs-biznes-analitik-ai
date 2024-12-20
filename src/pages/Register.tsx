@@ -70,6 +70,18 @@ const Register = () => {
             }}
             showLinks={false}
             providers={[]}
+            localization={{
+              variables: {
+                sign_up: {
+                  email_label: 'Email адрес',
+                  password_label: 'Пароль',
+                  button_label: 'Зарегистрироваться',
+                  loading_button_label: 'Регистрация...',
+                  social_provider_text: 'Зарегистрироваться через {{provider}}',
+                  link_text: 'Нет аккаунта? Зарегистрироваться',
+                },
+              },
+            }}
           />
           <div className="mt-4 text-center">
             <span className="text-gray-400">Уже есть аккаунт? </span>

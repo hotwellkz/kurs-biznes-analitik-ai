@@ -62,6 +62,12 @@ const Login = () => {
                   button_label: 'Войти',
                   loading_button_label: 'Вход...',
                   social_provider_text: 'Войти через {{provider}}',
+                  link_text: 'Уже есть аккаунт? Войти',
+                },
+                magic_link: {
+                  button_label: 'Отправить магическую ссылку',
+                  loading_button_label: 'Отправка магической ссылки...',
+                  link_text: 'Отправить магическую ссылку',
                 },
               },
             }}
