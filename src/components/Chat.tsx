@@ -48,8 +48,8 @@ export const Chat = () => {
         return;
       }
 
-      const newMessages = [...messages, { role: 'user', content: input }];
-      setMessages(newMessages);
+      const userMessage: Message = { role: 'user', content: input };
+      setMessages(prevMessages => [...prevMessages, userMessage]);
       setInput('');
 
       const response = await fetch('/functions/v1/chat', {
@@ -59,7 +59,7 @@ export const Chat = () => {
           'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
-          messages: newMessages,
+          messages: [...messages, userMessage],
         }),
       });
 
@@ -68,7 +68,10 @@ export const Chat = () => {
       }
 
       const data = await response.json();
-      const assistantMessage = data.choices[0].message;
+      const assistantMessage: Message = {
+        role: 'assistant',
+        content: data.choices[0].message.content
+      };
 
       // Уменьшаем количество токенов
       await supabase
@@ -76,7 +79,7 @@ export const Chat = () => {
         .update({ tokens: profile.tokens - 1 })
         .eq('id', session.user.id);
 
-      setMessages([...newMessages, assistantMessage]);
+      setMessages(prevMessages => [...prevMessages, assistantMessage]);
     } catch (error) {
       console.error('Error:', error);
       toast({
