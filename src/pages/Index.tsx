@@ -1,8 +1,15 @@
 import { Brain, Upload, Mic, ArrowRight } from "lucide-react";
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  const handleStartLearning = () => {
+    navigate('/program');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#0A0A0A]">
       <Navigation />
@@ -19,11 +26,17 @@ const Index = () => {
               Освойте профессию бизнес-аналитика с персональным ИИ-учителем, который адаптируется под ваш темп обучения
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-slide-up">
-              <button className="bg-primary hover:bg-primary-hover text-white px-8 py-3 rounded-full flex items-center justify-center gap-2 transition-colors">
+              <button 
+                onClick={handleStartLearning}
+                className="bg-primary hover:bg-primary-hover text-white px-8 py-3 rounded-full flex items-center justify-center gap-2 transition-colors"
+              >
                 Начать обучение
                 <ArrowRight size={20} />
               </button>
-              <button className="border border-white/20 hover:border-primary/50 text-white px-8 py-3 rounded-full transition-colors">
+              <button 
+                onClick={() => navigate('/program')}
+                className="border border-white/20 hover:border-primary/50 text-white px-8 py-3 rounded-full transition-colors"
+              >
                 Смотреть программу
               </button>
             </div>

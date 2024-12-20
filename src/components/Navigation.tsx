@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleStartLearning = () => {
+    navigate('/program');
+  };
 
   return (
     <nav className="fixed w-full bg-secondary/95 backdrop-blur-sm z-50 py-4">
@@ -15,9 +20,16 @@ export const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-white hover:text-primary transition-colors">Главная</Link>
-            <Link to="/program" className="text-white hover:text-primary transition-colors">Программа</Link>
-            <button className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-full transition-colors">
+            <Link to="/" className="text-white hover:text-primary transition-colors">
+              Главная
+            </Link>
+            <Link to="/program" className="text-white hover:text-primary transition-colors">
+              Программа
+            </Link>
+            <button 
+              onClick={handleStartLearning}
+              className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-full transition-colors"
+            >
               Начать обучение
             </button>
           </div>
@@ -49,7 +61,13 @@ export const Navigation = () => {
               >
                 Программа
               </Link>
-              <button className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-full transition-colors">
+              <button 
+                onClick={() => {
+                  handleStartLearning();
+                  setIsOpen(false);
+                }}
+                className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-full transition-colors"
+              >
                 Начать обучение
               </button>
             </div>
