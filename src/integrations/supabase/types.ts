@@ -16,6 +16,7 @@ export type Database = {
           generated_content: string | null
           id: string
           lesson_id: string
+          questions_answers: Json | null
           user_id: string
         }
         Insert: {
@@ -24,6 +25,7 @@ export type Database = {
           generated_content?: string | null
           id?: string
           lesson_id: string
+          questions_answers?: Json | null
           user_id: string
         }
         Update: {
@@ -32,6 +34,7 @@ export type Database = {
           generated_content?: string | null
           id?: string
           lesson_id?: string
+          questions_answers?: Json | null
           user_id?: string
         }
         Relationships: []

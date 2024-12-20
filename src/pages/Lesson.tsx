@@ -9,7 +9,8 @@ import { LessonContent } from '@/components/lesson/LessonContent';
 import { LessonTest } from '@/components/lesson/LessonTest';
 import { LessonHeader } from '@/components/lesson/LessonHeader';
 import { LessonControls } from '@/components/lesson/LessonControls';
-import { Button } from '@/components/ui/button';
+import { LessonChat } from '@/components/lesson/LessonChat';
+import { LessonProgress } from '@/components/lesson/LessonProgress';
 
 const Lesson = () => {
   const { lessonId } = useParams();
@@ -20,6 +21,7 @@ const Lesson = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVoiceControls, setShowVoiceControls] = useState(false);
   const [tokens, setTokens] = useState<number | null>(null);
+  const [questionsAnswers, setQuestionsAnswers] = useState<Array<{ question: string; answer: string }>>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -38,6 +40,23 @@ const Lesson = () => {
       if (profile) {
         setTokens(profile.tokens);
       }
+
+      // Load existing lesson progress
+      const { data: lessonProgress } = await supabase
+        .from('lesson_progress')
+        .select('generated_content, questions_answers')
+        .eq('user_id', session.user.id)
+        .eq('lesson_id', lessonId)
+        .single();
+
+      if (lessonProgress) {
+        if (lessonProgress.generated_content) {
+          setContent(lessonProgress.generated_content);
+        }
+        if (lessonProgress.questions_answers) {
+          setQuestionsAnswers(lessonProgress.questions_answers);
+        }
+      }
     };
 
     checkAuth();
@@ -55,7 +74,7 @@ const Lesson = () => {
     }, 15000);
 
     return () => clearInterval(interval);
-  }, [navigate, content]);
+  }, [navigate, content, lessonId]);
 
   const startLesson = async () => {
     try {
@@ -112,7 +131,7 @@ const Lesson = () => {
       const lessonContent = data.choices[0].message.content;
       setContent(lessonContent);
 
-      // Проверяем существование записи
+      // Check for existing progress
       const { data: existingProgress } = await supabase
         .from('lesson_progress')
         .select()
@@ -121,14 +140,14 @@ const Lesson = () => {
         .single();
 
       if (existingProgress) {
-        // Если запись существует - обновляем
+        // Update existing progress
         await supabase
           .from('lesson_progress')
           .update({ generated_content: lessonContent })
           .eq('user_id', session.user.id)
           .eq('lesson_id', lessonId);
       } else {
-        // Если записи нет - создаем новую
+        // Create new progress
         await supabase
           .from('lesson_progress')
           .insert({
@@ -147,33 +166,6 @@ const Lesson = () => {
       });
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const finishLesson = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) return;
-
-      await supabase
-        .from('lesson_progress')
-        .update({
-          completed: true,
-          completed_at: new Date().toISOString()
-        })
-        .eq('user_id', session.user.id)
-        .eq('lesson_id', lessonId);
-
-      navigate('/program');
-
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось завершить урок",
-        variant: "destructive",
-      });
     }
   };
 
@@ -215,28 +207,21 @@ const Lesson = () => {
                 />
               )}
 
-              <div className="prose prose-invert max-w-none">
-                <div 
-                  className="text-gray-200" 
-                  dangerouslySetInnerHTML={{ 
-                    __html: content
-                      .replace(/### (.*?)\n/g, '<h3 class="text-white text-xl font-bold mb-4">$1</h3>\n')
-                      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>') 
-                  }} 
-                />
-              </div>
+              <LessonChat
+                lessonId={lessonId!}
+                tokens={tokens}
+                setTokens={setTokens}
+              />
+
+              <LessonProgress
+                lessonId={lessonId!}
+                content={content}
+                questionsAnswers={questionsAnswers}
+                onComplete={() => navigate('/program')}
+              />
 
               <div className="space-y-4">
                 <LessonTest />
-              </div>
-
-              <div className="pt-8">
-                <Button
-                  onClick={finishLesson}
-                  className="w-full bg-green-600 hover:bg-green-700"
-                >
-                  Завершить урок
-                </Button>
               </div>
             </>
           )}
