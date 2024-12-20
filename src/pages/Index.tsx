@@ -2,6 +2,12 @@ import { Brain, Upload, Mic, ArrowRight, BookOpen, Users, HelpCircle } from "luc
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -9,6 +15,49 @@ const Index = () => {
   const handleStartLearning = () => {
     navigate('/program');
   };
+
+  const faqItems = [
+    {
+      question: "Как начать карьеру бизнес-аналитика?",
+      answer: "Начните с изучения основ бизнес-анализа, освойте необходимые инструменты (BPMN, UML, SQL), пройдите профессиональные курсы и получите практический опыт через стажировки или учебные проекты. Важно также развивать soft skills и изучать методологии управления проектами."
+    },
+    {
+      question: "Какие навыки необходимы бизнес-аналитику?",
+      answer: "Ключевые навыки включают: аналитическое мышление, умение проводить интервью, документирование требований, знание методологий разработки, владение инструментами моделирования процессов, коммуникабельность и умение презентовать идеи."
+    },
+    {
+      question: "Сколько зарабатывает бизнес-аналитик?",
+      answer: "Зарплата бизнес-аналитика в России варьируется от 60 000 до 250 000 рублей в месяц, в зависимости от опыта, региона и специализации. Junior-специалисты начинают с 60-90 тысяч, а Senior-аналитики могут получать более 200 000 рублей."
+    },
+    {
+      question: "Как составлять технические задания?",
+      answer: "ТЗ должно включать: цели и задачи проекта, функциональные и нефункциональные требования, ограничения, сроки реализации. Важно использовать четкие формулировки, структурировать документ и согласовывать его со всеми заинтересованными сторонами."
+    },
+    {
+      question: "Какие инструменты использует бизнес-аналитик?",
+      answer: "Основные инструменты: Jira для управления задачами, Draw.io или Visio для создания диаграмм, SQL для работы с данными, Excel для анализа, Confluence для документации, BPMN-редакторы для моделирования процессов."
+    },
+    {
+      question: "Как проводить интервью с заказчиком?",
+      answer: "Подготовьте список вопросов заранее, начните с общих тем и постепенно переходите к деталям. Внимательно слушайте, уточняйте неясные моменты, фиксируйте ключевые points и отправляйте summary после встречи для подтверждения договоренностей."
+    },
+    {
+      question: "Что такое user story и как их писать?",
+      answer: "User story - это краткое описание функционала с точки зрения пользователя. Формат: 'Как [роль], я хочу [действие], чтобы [цель/ценность]'. Важно добавлять критерии приемки и оценку трудозатрат."
+    },
+    {
+      question: "Как создавать эффективные презентации?",
+      answer: "Структурируйте информацию, используйте визуализации (графики, диаграммы), придерживайтесь правила '7±2' элементов на слайде, начните с ключевого сообщения, используйте понятный язык и подготовьте ответы на возможные вопросы."
+    },
+    {
+      question: "Как оценивать риски проекта?",
+      answer: "Определите потенциальные риски, оцените их вероятность и влияние, создайте матрицу рисков, разработайте стратегии митигации для каждого значимого риска, регулярно мониторьте и обновляйте оценки."
+    },
+    {
+      question: "Как работать с требованиями заказчика?",
+      answer: "Собирайте требования через интервью и воркшопы, документируйте их, приоритизируйте, валидируйте с заинтересованными сторонами, декомпозируйте на задачи. Важно уметь выявлять скрытые требования и управлять изменениями."
+    }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0A0A0A]">
@@ -141,35 +190,30 @@ const Index = () => {
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center animate-fade-in">
                 Топ 10 вопросов
               </h2>
-              <div className="space-y-6">
-                {[
-                  "Как начать карьеру бизнес-аналитика?",
-                  "Какие навыки необходимы бизнес-аналитику?",
-                  "Сколько зарабатывает бизнес-аналитик?",
-                  "Как составлять технические задания?",
-                  "Какие инструменты использует бизнес-аналитик?",
-                  "Как проводить интервью с заказчиком?",
-                  "Что такое user story и как их писать?",
-                  "Как создавать эффективные презентации?",
-                  "Как оценивать риски проекта?",
-                  "Как работать с требованиями заказчика?"
-                ].map((question, index) => (
-                  <div 
+              <Accordion type="single" collapsible className="space-y-4">
+                {faqItems.map((item, index) => (
+                  <AccordionItem
                     key={index}
-                    className="group p-6 rounded-xl bg-secondary-hover border border-white/10 transition-all duration-300 hover:border-primary/50 animate-fade-in"
+                    value={`item-${index}`}
+                    className="group px-6 rounded-xl bg-secondary-hover border border-white/10 transition-all duration-300 hover:border-primary/50 animate-fade-in data-[state=open]:border-primary/50"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <HelpCircle className="w-5 h-5 text-primary" />
+                    <AccordionTrigger className="py-6">
+                      <div className="flex items-center gap-4 text-left">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                          <HelpCircle className="w-5 h-5 text-primary" />
+                        </div>
+                        <h3 className="text-lg font-medium text-white group-hover:text-primary transition-colors">
+                          {item.question}
+                        </h3>
                       </div>
-                      <h3 className="text-lg font-medium text-white group-hover:text-primary transition-colors">
-                        {question}
-                      </h3>
-                    </div>
-                  </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300 pb-6 pl-14">
+                      {item.answer}
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </div>
+              </Accordion>
             </div>
           </div>
         </section>
