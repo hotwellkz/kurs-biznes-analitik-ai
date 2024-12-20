@@ -11,6 +11,11 @@ import { LessonControls } from '@/components/lesson/LessonControls';
 import { LessonChat } from '@/components/lesson/LessonChat';
 import { LessonProgress } from '@/components/lesson/LessonProgress';
 
+interface QuestionAnswer {
+  question: string;
+  answer: string;
+}
+
 const Lesson = () => {
   const { lessonId } = useParams();
   const navigate = useNavigate();
@@ -20,7 +25,7 @@ const Lesson = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVoiceControls, setShowVoiceControls] = useState(false);
   const [tokens, setTokens] = useState<number | null>(null);
-  const [questionsAnswers, setQuestionsAnswers] = useState<QA[]>([]);
+  const [questionsAnswers, setQuestionsAnswers] = useState<QuestionAnswer[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
