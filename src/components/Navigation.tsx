@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Menu, X, Coins } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Auth } from './Auth';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,12 +10,48 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState<'sign_in' | 'sign_up'>('sign_in');
+  const [tokens, setTokens] = useState<number | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
-  const handleStartLearning = () => {
-    navigate('/program');
-  };
+  useEffect(() => {
+    const fetchTokens = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setIsAuthenticated(true);
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('tokens')
+          .eq('id', session.user.id)
+          .single();
+        
+        if (profile) {
+          setTokens(profile.tokens);
+        }
+      } else {
+        setIsAuthenticated(false);
+        setTokens(null);
+      }
+    };
+
+    fetchTokens();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN') {
+        setIsAuthenticated(true);
+        fetchTokens();
+      } else if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
+        setTokens(null);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -23,11 +59,11 @@ export const Navigation = () => {
       title: "Выход выполнен успешно",
       description: "Вы успешно вышли из системы",
     });
+    navigate('/');
   };
 
   const openAuth = (mode: 'sign_in' | 'sign_up') => {
-    setAuthMode(mode);
-    setShowAuth(true);
+    navigate(`/${mode === 'sign_in' ? 'login' : 'register'}`);
   };
 
   return (
@@ -46,19 +82,37 @@ export const Navigation = () => {
             <Link to="/program" className="text-white hover:text-primary transition-colors">
               Программа
             </Link>
-            <Button 
-              variant="ghost"
-              onClick={() => openAuth('sign_in')}
-              className="text-white hover:text-primary transition-colors"
-            >
-              Вход
-            </Button>
-            <Button 
-              onClick={() => openAuth('sign_up')}
-              className="bg-primary hover:bg-primary-hover text-white transition-colors"
-            >
-              Регистрация
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <div className="flex items-center gap-2 text-white">
+                  <Coins className="w-5 h-5 text-primary" />
+                  <span>{tokens} токенов</span>
+                </div>
+                <Button 
+                  variant="ghost"
+                  onClick={handleSignOut}
+                  className="text-white hover:text-primary transition-colors"
+                >
+                  Выйти
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost"
+                  onClick={() => openAuth('sign_in')}
+                  className="text-white hover:text-primary transition-colors"
+                >
+                  Вход
+                </Button>
+                <Button 
+                  onClick={() => openAuth('sign_up')}
+                  className="bg-primary hover:bg-primary-hover text-white transition-colors"
+                >
+                  Регистрация
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Navigation Button */}
@@ -88,30 +142,50 @@ export const Navigation = () => {
               >
                 Программа
               </Link>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  openAuth('sign_in');
-                  setIsOpen(false);
-                }}
-                className="text-white hover:text-primary transition-colors"
-              >
-                Вход
-              </Button>
-              <Button
-                onClick={() => {
-                  openAuth('sign_up');
-                  setIsOpen(false);
-                }}
-                className="bg-primary hover:bg-primary-hover text-white transition-colors"
-              >
-                Регистрация
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <div className="flex items-center gap-2 text-white">
+                    <Coins className="w-5 h-5 text-primary" />
+                    <span>{tokens} токенов</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      handleSignOut();
+                      setIsOpen(false);
+                    }}
+                    className="text-white hover:text-primary transition-colors"
+                  >
+                    Выйти
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      openAuth('sign_in');
+                      setIsOpen(false);
+                    }}
+                    className="text-white hover:text-primary transition-colors"
+                  >
+                    Вход
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      openAuth('sign_up');
+                      setIsOpen(false);
+                    }}
+                    className="bg-primary hover:bg-primary-hover text-white transition-colors"
+                  >
+                    Регистрация
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         )}
       </div>
-      <Auth isOpen={showAuth} onClose={() => setShowAuth(false)} mode={authMode} />
     </nav>
   );
 };

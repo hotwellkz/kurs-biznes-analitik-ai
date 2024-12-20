@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import Program from "./pages/Program";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -45,6 +47,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/program" element={<Program />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/privacy" element={<Index />} />
           <Route path="/terms" element={<Index />} />
         </Routes>
