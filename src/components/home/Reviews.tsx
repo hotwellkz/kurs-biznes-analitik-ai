@@ -33,6 +33,9 @@ export const Reviews = () => {
     fetchReviews();
   }, []);
 
+  // Create duplicated reviews array for infinite scroll
+  const duplicatedReviews = [...reviews, ...reviews, ...reviews];
+
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-secondary to-[#0A0A0A] overflow-hidden">
       <div className="container mx-auto">
@@ -59,34 +62,37 @@ export const Reviews = () => {
           </div>
         </div>
 
-        <div 
-          className="flex gap-6"
-          style={{
-            animation: `slide ${isMobile ? 10 : 30}s linear infinite`,
-          }}
-        >
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="flex-shrink-0 w-[300px] md:w-[400px] p-6 rounded-2xl bg-secondary-hover border border-white/10"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`w-5 h-5 ${
-                      star <= review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                    }`}
-                  />
-                ))}
+        <div className="relative w-full overflow-hidden">
+          <div 
+            className="flex gap-6"
+            style={{
+              animation: `slide ${isMobile ? 10 : 30}s linear infinite`,
+              width: "fit-content"
+            }}
+          >
+            {duplicatedReviews.map((review, index) => (
+              <div
+                key={`${review.id}-${index}`}
+                className="flex-shrink-0 w-[300px] md:w-[400px] p-6 rounded-2xl bg-secondary-hover border border-white/10"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-5 h-5 ${
+                        star <= review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className="text-gray-300 mb-4">{review.content}</p>
+                <div className="flex justify-between items-center text-sm text-gray-400">
+                  <span>{review.author_name}</span>
+                  <span>{new Date(review.created_at).toLocaleDateString()}</span>
+                </div>
               </div>
-              <p className="text-gray-300 mb-4">{review.content}</p>
-              <div className="flex justify-between items-center text-sm text-gray-400">
-                <span>{review.author_name}</span>
-                <span>{new Date(review.created_at).toLocaleDateString()}</span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
@@ -106,7 +112,7 @@ export const Reviews = () => {
               transform: translateX(0);
             }
             to {
-              transform: translateX(-100%);
+              transform: translateX(-33.33%);
             }
           }
         `}
