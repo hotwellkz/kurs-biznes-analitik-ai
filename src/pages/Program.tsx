@@ -2,6 +2,7 @@ import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { useEffect } from "react";
+import { Chat } from "../components/Chat";
 import {
   Accordion,
   AccordionContent,
@@ -20,12 +21,14 @@ const Program = () => {
       <Breadcrumbs />
       
       <main className="flex-grow container mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 animate-fade-in">
-          Программа курса
-        </h1>
-        
-        <div className="space-y-6 animate-slide-up">
-          <Accordion type="single" collapsible className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 animate-fade-in">
+              Программа курса
+            </h1>
+            
+            <div className="space-y-6 animate-slide-up">
+              <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="module-1" className="border-none">
               <AccordionTrigger className="bg-secondary/50 hover:bg-secondary px-6 py-4 rounded-lg text-white hover:no-underline">
                 Модуль 1: Введение в профессию бизнес-аналитика
@@ -163,7 +166,19 @@ const Program = () => {
                 </div>
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
+              </Accordion>
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Персональный ИИ-ассистент
+            </h2>
+            <p className="text-gray-400 mb-4">
+              Задавайте вопросы нашему ИИ-ассистенту по материалам курса. Каждый вопрос стоит 1 токен.
+            </p>
+            <Chat />
+          </div>
         </div>
       </main>
       
