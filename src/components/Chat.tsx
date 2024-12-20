@@ -52,22 +52,16 @@ export const Chat = () => {
       setMessages(prevMessages => [...prevMessages, userMessage]);
       setInput('');
 
-      const response = await fetch('/functions/v1/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
           messages: [...messages, userMessage],
-        }),
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to get response');
+      if (error) {
+        throw error;
       }
 
-      const data = await response.json();
       const assistantMessage: Message = {
         role: 'assistant',
         content: data.choices[0].message.content
