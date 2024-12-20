@@ -200,6 +200,13 @@ const Lesson = () => {
 
           {content && (
             <>
+              <LessonProgress
+                lessonId={lessonId!}
+                content={content}
+                questionsAnswers={questionsAnswers}
+                onComplete={() => navigate('/program')}
+              />
+
               <LessonContent
                 content={content}
                 onVoiceControlsChange={setShowVoiceControls}
@@ -215,18 +222,13 @@ const Lesson = () => {
                 />
               )}
 
-              <LessonChat
-                lessonId={lessonId!}
-                tokens={tokens}
-                setTokens={setTokens}
-              />
-
-              <LessonProgress
-                lessonId={lessonId!}
-                content={content}
-                questionsAnswers={questionsAnswers}
-                onComplete={() => navigate('/program')}
-              />
+              <div className="mt-12 border-t border-primary/20 pt-8">
+                <LessonChat
+                  lessonId={lessonId!}
+                  tokens={tokens}
+                  setTokens={setTokens}
+                />
+              </div>
 
               <div className="space-y-4">
                 <LessonTest />
