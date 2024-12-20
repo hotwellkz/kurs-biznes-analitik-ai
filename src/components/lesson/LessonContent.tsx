@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Loader2, Play, Pause, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { VoiceButtons } from './VoiceButtons';
+import { ShareButton } from './ShareButton';
 
 interface LessonContentProps {
   content: string;
@@ -115,46 +115,15 @@ export const LessonContent = ({
     }
   };
 
-  const shareOnWhatsApp = () => {
-    const text = encodeURIComponent(content);
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-  };
-
   return (
     <div className="flex flex-wrap gap-4">
-      <Button
-        onClick={playFreeVoice}
-        disabled={isVoiceLoading}
-        variant="outline"
-      >
-        {isPlaying ? (
-          <Pause className="w-4 h-4 mr-2" />
-        ) : (
-          <Play className="w-4 h-4 mr-2" />
-        )}
-        Озвучить бесплатно
-      </Button>
-
-      <Button
-        onClick={playPremiumVoice}
-        disabled={isVoiceLoading}
-        className="bg-primary hover:bg-primary-hover"
-      >
-        {isVoiceLoading ? (
-          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-        ) : (
-          <Play className="w-4 h-4 mr-2" />
-        )}
-        Озвучить красивым голосом (45 токенов)
-      </Button>
-
-      <Button
-        onClick={shareOnWhatsApp}
-        variant="outline"
-      >
-        <Share2 className="w-4 h-4 mr-2" />
-        Поделиться в WhatsApp
-      </Button>
+      <VoiceButtons
+        isVoiceLoading={isVoiceLoading}
+        isPlaying={isPlaying}
+        onPlayFreeVoice={playFreeVoice}
+        onPlayPremiumVoice={playPremiumVoice}
+      />
+      <ShareButton content={content} />
     </div>
   );
 };
