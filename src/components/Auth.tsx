@@ -69,10 +69,8 @@ export const Auth = ({ isOpen, onClose, mode = 'sign_in' }: AuthProps) => {
               loading_button_label: 'Вход...',
               social_provider_text: 'Войти через {{provider}}',
               link_text: 'Уже есть аккаунт? Войти',
-              forgotten_password_label: 'Забыли пароль?',
-              confirmation_text: 'Проверьте свою электронную почту для подтверждения',
-              placeholder_email: 'Ваш email адрес',
-              placeholder_password: 'Ваш пароль'
+              email_input_placeholder: 'Ваш email адрес',
+              password_input_placeholder: 'Ваш пароль'
             },
             sign_up: {
               email_label: 'Email адрес',
@@ -82,28 +80,31 @@ export const Auth = ({ isOpen, onClose, mode = 'sign_in' }: AuthProps) => {
               social_provider_text: 'Зарегистрироваться через {{provider}}',
               link_text: 'Нет аккаунта? Зарегистрироваться',
               confirmation_text: 'Проверьте свою электронную почту для подтверждения',
-              placeholder_email: 'Ваш email адрес',
-              placeholder_password: 'Ваш пароль'
+              email_input_placeholder: 'Ваш email адрес',
+              password_input_placeholder: 'Ваш пароль'
             },
             magic_link: {
+              email_input_label: 'Email адрес',
               button_label: 'Отправить магическую ссылку',
               loading_button_label: 'Отправка магической ссылки...',
               link_text: 'Отправить магическую ссылку',
               confirmation_text: 'Проверьте свою электронную почту для входа',
-              placeholder_email: 'Ваш email адрес'
+              email_input_placeholder: 'Ваш email адрес'
             },
             forgotten_password: {
+              email_label: 'Email адрес',
               button_label: 'Отправить инструкции',
               loading_button_label: 'Отправка инструкций...',
               link_text: 'Забыли пароль?',
               confirmation_text: 'Проверьте свою электронную почту для сброса пароля',
-              placeholder_email: 'Ваш email адрес'
+              email_input_placeholder: 'Ваш email адрес'
             },
             update_password: {
+              password_label: 'Пароль',
               button_label: 'Обновить пароль',
               loading_button_label: 'Обновление пароля...',
               confirmation_text: 'Ваш пароль был успешно обновлен',
-              placeholder_password: 'Ваш новый пароль'
+              password_input_placeholder: 'Ваш новый пароль'
             }
           },
         }}
