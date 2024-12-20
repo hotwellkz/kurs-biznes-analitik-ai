@@ -26,6 +26,9 @@ export const Footer = () => {
               <Link to="/program" className="text-gray-400 hover:text-primary transition-colors">
                 Программа курса
               </Link>
+              <Link to="/pricing" className="text-gray-400 hover:text-primary transition-colors">
+                Тарифы и цены
+              </Link>
             </div>
           </div>
           

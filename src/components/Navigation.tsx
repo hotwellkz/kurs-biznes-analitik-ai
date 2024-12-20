@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Coins } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Auth } from './Auth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -86,6 +85,9 @@ export const Navigation = () => {
             <Link to="/program" className="text-white hover:text-primary transition-colors">
               Программа
             </Link>
+            <Link to="/pricing" className="text-white hover:text-primary transition-colors">
+              Цены
+            </Link>
             {isAuthenticated ? (
               <>
                 <div className="flex items-center gap-2 text-white">
@@ -145,6 +147,13 @@ export const Navigation = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Программа
+              </Link>
+              <Link 
+                to="/pricing" 
+                className="text-white hover:text-primary transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                Цены
               </Link>
               {isAuthenticated ? (
                 <>

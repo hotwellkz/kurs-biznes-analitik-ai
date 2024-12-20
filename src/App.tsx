@@ -11,6 +11,7 @@ import Program from "./pages/Program";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Lesson from "./pages/Lesson";
+import Pricing from "./pages/Pricing";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/program" element={<Program />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route 
             path="/lesson/:lessonId" 
             element={

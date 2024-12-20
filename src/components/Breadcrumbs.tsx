@@ -11,7 +11,8 @@ export const Breadcrumbs = () => {
   const breadcrumbItems = {
     'program': 'Программа курса',
     'privacy': 'Политика конфиденциальности',
-    'terms': 'Публичная оферта'
+    'terms': 'Публичная оферта',
+    'pricing': 'Тарифы и цены'
   };
   
   return (
