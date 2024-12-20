@@ -112,13 +112,31 @@ const Lesson = () => {
       const lessonContent = data.choices[0].message.content;
       setContent(lessonContent);
 
-      await supabase
+      // Проверяем существование записи
+      const { data: existingProgress } = await supabase
         .from('lesson_progress')
-        .upsert({
-          user_id: session.user.id,
-          lesson_id: lessonId,
-          generated_content: lessonContent
-        });
+        .select()
+        .eq('user_id', session.user.id)
+        .eq('lesson_id', lessonId)
+        .single();
+
+      if (existingProgress) {
+        // Если запись существует - обновляем
+        await supabase
+          .from('lesson_progress')
+          .update({ generated_content: lessonContent })
+          .eq('user_id', session.user.id)
+          .eq('lesson_id', lessonId);
+      } else {
+        // Если записи нет - создаем новую
+        await supabase
+          .from('lesson_progress')
+          .insert({
+            user_id: session.user.id,
+            lesson_id: lessonId,
+            generated_content: lessonContent
+          });
+      }
 
     } catch (error) {
       console.error('Error:', error);
