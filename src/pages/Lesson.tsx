@@ -59,10 +59,10 @@ const Lesson = () => {
           setContent(lessonProgress.generated_content);
         }
         if (lessonProgress.questions_answers) {
-          setQuestionsAnswers(Array.isArray(lessonProgress.questions_answers) 
-            ? lessonProgress.questions_answers as QA[]
-            : []
-          );
+          const qaArray = lessonProgress.questions_answers as Array<{ question: string; answer: string }>;
+          if (Array.isArray(qaArray) && qaArray.every(qa => 'question' in qa && 'answer' in qa)) {
+            setQuestionsAnswers(qaArray);
+          }
         }
       }
     };
