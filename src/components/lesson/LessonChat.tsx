@@ -112,12 +112,12 @@ export const LessonChat = ({ lessonId, tokens, setTokens }: LessonChatProps) => 
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Задайте вопрос по теме урока..."
-          className="bg-secondary/50 text-white"
+          className="bg-secondary/30 backdrop-blur-sm text-white border-primary/20 focus:border-primary/40"
         />
         <Button
           onClick={() => askQuestion()}
           disabled={isLoading || !question}
-          className="bg-primary hover:bg-primary-hover"
+          className="bg-primary hover:bg-primary-hover text-white font-semibold px-6"
         >
           {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Спросить'}
         </Button>

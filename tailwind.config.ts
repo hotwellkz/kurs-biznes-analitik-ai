@@ -27,18 +27,25 @@ export default {
         primary: {
           DEFAULT: "#FF3B3B",
           hover: "#FF5252",
+          light: "#FFE5E5",
+          dark: "#CC2F2F",
         },
         secondary: {
           DEFAULT: "#1A1A1A",
           hover: "#2A2A2A",
+          light: "#F5F5F5",
+          dark: "#0A0A0A",
         },
         accent: {
           DEFAULT: "#FF3B3B",
           foreground: "#FFFFFF",
+          light: "#FFE5E5",
+          dark: "#CC2F2F",
         },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "lesson-gradient": "linear-gradient(180deg, #1A1A1A 0%, #0A0A0A 100%)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in-out",

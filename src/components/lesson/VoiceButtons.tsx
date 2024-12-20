@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Loader2, Play, Pause } from 'lucide-react';
+import { Volume2, Crown, Loader2 } from 'lucide-react';
 
 interface VoiceButtonsProps {
   isVoiceLoading: boolean;
@@ -18,26 +18,27 @@ export const VoiceButtons = ({
     <>
       <Button
         onClick={onPlayFreeVoice}
-        disabled={isVoiceLoading}
+        disabled={isVoiceLoading || isPlaying}
         variant="outline"
+        className="border-primary/20 hover:bg-primary/5 text-white"
       >
-        {isPlaying ? (
-          <Pause className="w-4 h-4 mr-2" />
+        {isVoiceLoading ? (
+          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
         ) : (
-          <Play className="w-4 h-4 mr-2" />
+          <Volume2 className="w-4 h-4 mr-2" />
         )}
         Озвучить бесплатно
       </Button>
 
       <Button
         onClick={onPlayPremiumVoice}
-        disabled={isVoiceLoading}
-        className="bg-primary hover:bg-primary-hover"
+        disabled={isVoiceLoading || isPlaying}
+        className="bg-primary hover:bg-primary-hover text-white"
       >
         {isVoiceLoading ? (
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
         ) : (
-          <Play className="w-4 h-4 mr-2" />
+          <Crown className="w-4 h-4 mr-2" />
         )}
         Озвучить красивым голосом (45 токенов)
       </Button>

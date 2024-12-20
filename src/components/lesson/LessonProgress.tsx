@@ -51,7 +51,7 @@ export const LessonProgress = ({
 
   return (
     <div className="space-y-8">
-      <div className="prose prose-invert max-w-none">
+      <div className="prose max-w-none">
         <div 
           className="text-gray-200" 
           dangerouslySetInnerHTML={{ 
@@ -64,10 +64,10 @@ export const LessonProgress = ({
 
       {questionsAnswers.length > 0 && (
         <div className="space-y-6">
-          <h3 className="text-2xl font-bold text-white">Ваши вопросы и ответы:</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">Ваши вопросы и ответы:</h3>
           {questionsAnswers.map((qa, index) => (
-            <div key={index} className="bg-secondary/50 p-4 rounded-lg space-y-2">
-              <p className="text-primary font-semibold">{qa.question}</p>
+            <div key={index} className="bg-secondary/30 backdrop-blur-sm p-6 rounded-lg space-y-3 border border-primary/20">
+              <p className="text-primary-light font-semibold">{qa.question}</p>
               <p className="text-gray-300">{qa.answer}</p>
             </div>
           ))}
@@ -78,7 +78,7 @@ export const LessonProgress = ({
         <Button
           onClick={completeLesson}
           disabled={isCompleting}
-          className="w-full bg-green-600 hover:bg-green-700"
+          className="w-full bg-primary hover:bg-primary-hover text-white font-semibold"
         >
           Завершить урок
         </Button>
