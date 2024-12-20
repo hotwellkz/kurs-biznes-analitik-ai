@@ -11,8 +11,25 @@ import {
 } from "@/components/ui/accordion";
 
 const Program = () => {
+  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const fetchCompletedLessons = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data } = await supabase
+        .from('lesson_progress')
+        .select('lesson_id')
+        .eq('user_id', session.user.id)
+        .eq('completed', true);
+
+      if (data) {
+        setCompletedLessons(data.map(item => item.lesson_id));
+      }
+    };
+
+    fetchCompletedLessons();
   }, []);
 
   return (
@@ -29,20 +46,42 @@ const Program = () => {
             
             <div className="space-y-6 animate-slide-up">
               <Accordion type="single" collapsible className="space-y-4">
-            <AccordionItem value="module-1" className="border-none">
-              <AccordionTrigger className="bg-secondary/50 hover:bg-secondary px-6 py-4 rounded-lg text-white hover:no-underline">
-                Модуль 1: Введение в профессию бизнес-аналитика
-              </AccordionTrigger>
-              <AccordionContent className="px-6 py-4 text-gray-300 space-y-4">
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Урок 1.1: Кто такой бизнес-аналитик?</h3>
-                  <ul className="list-disc list-inside space-y-2 text-gray-400">
-                    <li>Основные роли и обязанности</li>
-                    <li>Ключевые навыки и инструменты</li>
-                    <li>Примеры задач</li>
-                    <li>Тест: Понимание роли бизнес-аналитика</li>
-                  </ul>
-                </div>
+                <AccordionItem value="module-1" className="border-none">
+                  <AccordionTrigger className="bg-secondary/50 hover:bg-secondary px-6 py-4 rounded-lg text-white hover:no-underline">
+                    Модуль 1: Введение в профессию бизнес-аналитика
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 py-4 text-gray-300 space-y-4">
+                    <div>
+                      <Link 
+                        to="/lesson/1.1"
+                        className={`flex items-center gap-2 text-white font-semibold mb-2 hover:text-primary transition-colors ${
+                          completedLessons.includes('1.1') ? 'text-green-500' : ''
+                        }`}
+                      >
+                        {completedLessons.includes('1.1') && (
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                        Урок 1.1: Кто такой бизнес-аналитик?
+                      </Link>
+                      <ul className="list-disc list-inside space-y-2 text-gray-400">
+                        <li>Основные роли и обязанности</li>
+                        <li>Ключевые навыки и инструменты</li>
+                        <li>Примеры задач</li>
+                        <li>Тест: Понимание роли бизнес-аналитика</li>
+                      </ul>
+                    </div>
                 <div>
                   <h3 className="text-white font-semibold mb-2">Урок 1.2: Жизненный цикл разработки (SDLC)</h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-400">
@@ -52,9 +91,8 @@ const Program = () => {
                     <li>Тест: Основы SDLC и роль аналитика</li>
                   </ul>
                 </div>
-              </AccordionContent>
-            </AccordionItem>
-
+                  </AccordionContent>
+                </AccordionItem>
             <AccordionItem value="module-2" className="border-none">
               <AccordionTrigger className="bg-secondary/50 hover:bg-secondary px-6 py-4 rounded-lg text-white hover:no-underline">
                 Модуль 2: Основы анализа требований

@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Program from "./pages/Program";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Lesson from "./pages/Lesson";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -49,6 +50,7 @@ const App = () => (
           <Route path="/program" element={<Program />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/lesson/:lessonId" element={<Lesson />} />
           <Route path="/privacy" element={<Index />} />
           <Route path="/terms" element={<Index />} />
         </Routes>
