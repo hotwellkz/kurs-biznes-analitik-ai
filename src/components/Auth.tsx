@@ -55,10 +55,37 @@ export const Auth = ({ isOpen, onClose, mode = 'sign_in' }: AuthProps) => {
           className: {
             button: 'bg-primary hover:bg-primary-hover',
             input: 'bg-background',
+            divider: 'bg-primary/20',
+            message: 'text-white',
           },
         }}
         showLinks={true}
-        providers={[]}
+        providers={['google']}
+        localization={{
+          variables: {
+            sign_in: {
+              email_label: 'Email адрес',
+              password_label: 'Пароль',
+              button_label: 'Войти',
+              loading_button_label: 'Вход...',
+              social_provider_text: 'Войти через {{provider}}',
+              link_text: 'Уже есть аккаунт? Войти',
+            },
+            sign_up: {
+              email_label: 'Email адрес',
+              password_label: 'Пароль',
+              button_label: 'Регистрация',
+              loading_button_label: 'Регистрация...',
+              social_provider_text: 'Зарегистрироваться через {{provider}}',
+              link_text: 'Нет аккаунта? Зарегистрироваться',
+            },
+            magic_link: {
+              button_label: 'Отправить магическую ссылку',
+              loading_button_label: 'Отправка магической ссылки...',
+              link_text: 'Отправить магическую ссылку',
+            },
+          },
+        }}
       />
       <AuthModal isOpen={showGiftModal} onClose={handleGiftModalClose} />
     </>
