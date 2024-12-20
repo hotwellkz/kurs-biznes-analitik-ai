@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Auth as SupabaseAuth } from '@supabase/auth-ui-react';
 import { supabase } from '@/integrations/supabase/client';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Eye, EyeOff } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { useToast } from '@/hooks/use-toast';
 
