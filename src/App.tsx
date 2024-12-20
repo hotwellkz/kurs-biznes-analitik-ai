@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Lesson from "./pages/Lesson";
 import Pricing from "./pages/Pricing";
+import Privacy from "./pages/Privacy";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -53,6 +54,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route 
             path="/lesson/:lessonId" 
             element={
@@ -61,8 +63,6 @@ const App = () => (
               </RequireAuth>
             } 
           />
-          <Route path="/privacy" element={<Index />} />
-          <Route path="/terms" element={<Index />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
