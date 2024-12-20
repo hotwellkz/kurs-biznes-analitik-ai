@@ -79,7 +79,10 @@ const Register = () => {
                   loading_button_label: 'Регистрация...',
                   social_provider_text: 'Зарегистрироваться через {{provider}}',
                   link_text: 'Нет аккаунта? Зарегистрироваться',
-                },
+                  confirmation_text: 'Проверьте свою электронную почту для подтверждения',
+                  placeholder_email: 'Ваш email адрес',
+                  placeholder_password: 'Ваш пароль'
+                }
               },
             }}
           />
