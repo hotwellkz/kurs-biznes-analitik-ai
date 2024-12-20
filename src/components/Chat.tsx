@@ -42,12 +42,14 @@ export const Chat = () => {
       setIsLoading(true);
 
       // Deduct tokens
-      const { data: updatedProfile } = await supabase
+      const { data: updatedProfile, error: updateError } = await supabase
         .from('profiles')
         .update({ tokens: profile.tokens - 5 })
         .eq('id', session.user.id)
         .select()
         .single();
+
+      if (updateError) throw updateError;
 
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
@@ -69,16 +71,15 @@ export const Chat = () => {
       const answer = data.choices[0].message.content;
 
       // Store the Q&A in the database
-      const { data: chatHistory } = await supabase
+      const { error: chatError } = await supabase
         .from('chat_history')
-        .insert([
-          {
-            user_id: session.user.id,
-            question,
-            answer
-          }
-        ])
-        .select();
+        .insert({
+          user_id: session.user.id,
+          question,
+          answer
+        });
+
+      if (chatError) throw chatError;
 
       // Reload the page to show the new answer
       window.location.reload();
