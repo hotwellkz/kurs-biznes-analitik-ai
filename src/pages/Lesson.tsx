@@ -161,7 +161,7 @@ const Lesson = () => {
     }
   };
 
-  return (
+return (
     <div className="min-h-screen flex flex-col bg-[#0A0A0A]">
       <Navigation />
       <Breadcrumbs />
@@ -227,11 +227,14 @@ const Lesson = () => {
               )}
 
               <div className="prose prose-invert max-w-none">
-                <div dangerouslySetInnerHTML={{ 
-                  __html: content
-                    .replace(/### (.*?)\n/g, '<h3 class="text-white text-xl font-bold mb-4">$1</h3>\n')
-                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>') 
-                }} />
+                <div 
+                  className="text-gray-200" 
+                  dangerouslySetInnerHTML={{ 
+                    __html: content
+                      .replace(/### (.*?)\n/g, '<h3 class="text-white text-xl font-bold mb-4">$1</h3>\n')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>') 
+                  }} 
+                />
               </div>
 
               <div className="space-y-4">
