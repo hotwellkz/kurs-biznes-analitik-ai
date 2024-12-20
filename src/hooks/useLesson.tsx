@@ -55,7 +55,17 @@ export const useLesson = (lessonId: string) => {
           .eq('lesson_id', lessonId)
           .maybeSingle();
 
-        if (lessonProgress) {
+        // Create lesson progress if it doesn't exist
+        if (!lessonProgress) {
+          await supabase
+            .from('lesson_progress')
+            .insert({
+              user_id: session.user.id,
+              lesson_id: lessonId,
+              completed: false,
+              questions_answers: []
+            });
+        } else {
           if (lessonProgress.generated_content) {
             setContent(lessonProgress.generated_content);
           }
@@ -120,7 +130,7 @@ export const useLesson = (lessonId: string) => {
         .update({ tokens: tokens! - 5 })
         .eq('id', session.user.id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (profile) {
         setTokens(profile.tokens);
@@ -147,31 +157,14 @@ export const useLesson = (lessonId: string) => {
       const lessonContent = data.choices[0].message.content;
       setContent(lessonContent);
 
-      // Check for existing progress
-      const { data: existingProgress } = await supabase
+      // Update lesson progress
+      await supabase
         .from('lesson_progress')
-        .select()
-        .eq('user_id', session.user.id)
-        .eq('lesson_id', lessonId)
-        .single();
-
-      if (existingProgress) {
-        // Update existing progress
-        await supabase
-          .from('lesson_progress')
-          .update({ generated_content: lessonContent })
-          .eq('user_id', session.user.id)
-          .eq('lesson_id', lessonId);
-      } else {
-        // Create new progress
-        await supabase
-          .from('lesson_progress')
-          .insert({
-            user_id: session.user.id,
-            lesson_id: lessonId,
-            generated_content: lessonContent
-          });
-      }
+        .upsert({
+          user_id: session.user.id,
+          lesson_id: lessonId,
+          generated_content: lessonContent
+        });
 
     } catch (error) {
       console.error('Error:', error);
