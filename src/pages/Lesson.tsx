@@ -6,7 +6,6 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { LessonContent } from '@/components/lesson/LessonContent';
-import { LessonTest } from '@/components/lesson/LessonTest';
 import { LessonHeader } from '@/components/lesson/LessonHeader';
 import { LessonControls } from '@/components/lesson/LessonControls';
 import { LessonChat } from '@/components/lesson/LessonChat';
@@ -202,17 +201,9 @@ const Lesson = () => {
           </div>
 
           {content && (
-            <div className="space-y-12">
-              <div className="bg-secondary-dark/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 border border-primary/10 shadow-xl animate-slide-up">
-                <LessonProgress
-                  lessonId={lessonId!}
-                  content={content}
-                  questionsAnswers={questionsAnswers}
-                  onComplete={() => navigate('/program')}
-                />
-              </div>
-
-              <div className="bg-secondary-dark/30 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="space-y-8 sm:space-y-12">
+              {/* Кнопки управления контентом */}
+              <div className="bg-secondary-dark/30 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <LessonContent
                   content={content}
                   onVoiceControlsChange={setShowVoiceControls}
@@ -222,9 +213,19 @@ const Lesson = () => {
                 />
               </div>
 
+              {/* Основной контент урока */}
+              <div className="bg-secondary-dark/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-xl animate-slide-up">
+                <LessonProgress
+                  lessonId={lessonId!}
+                  content={content}
+                  questionsAnswers={questionsAnswers}
+                  onComplete={() => navigate('/program')}
+                />
+              </div>
+
               {showVoiceControls && (
                 <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
-                  <div className="bg-secondary-dark/90 backdrop-blur-md rounded-full px-6 py-3 border border-primary/20 shadow-2xl">
+                  <div className="bg-secondary-dark/90 backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-primary/20 shadow-2xl">
                     <LessonControls 
                       isPlaying={isPlaying}
                       onPlayPause={handlePlayPause}
@@ -233,10 +234,11 @@ const Lesson = () => {
                 </div>
               )}
 
+              {/* Чат и вопросы */}
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent blur-2xl -z-10" />
                 <div className="border-t border-primary/10 pt-8">
-                  <div className="bg-secondary-dark/40 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <div className="bg-secondary-dark/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <LessonChat
                       lessonId={lessonId!}
                       tokens={tokens}
@@ -244,10 +246,6 @@ const Lesson = () => {
                     />
                   </div>
                 </div>
-              </div>
-
-              <div className="bg-secondary-dark/30 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary/10 shadow-lg">
-                <LessonTest />
               </div>
             </div>
           )}

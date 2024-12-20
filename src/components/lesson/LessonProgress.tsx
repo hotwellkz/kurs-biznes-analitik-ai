@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+import { LessonTest } from './LessonTest';
 
 interface LessonProgressProps {
   lessonId: string;
@@ -51,6 +52,19 @@ export const LessonProgress = ({
 
   return (
     <div className="space-y-8">
+      {/* Кнопки управления уроком */}
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <LessonTest />
+        <Button
+          onClick={completeLesson}
+          disabled={isCompleting}
+          className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-hover text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        >
+          Завершить урок
+        </Button>
+      </div>
+
+      {/* Контент урока */}
       <div className="prose prose-invert max-w-none">
         <div 
           className="text-gray-200" 
@@ -62,6 +76,7 @@ export const LessonProgress = ({
         />
       </div>
 
+      {/* Вопросы и ответы */}
       {questionsAnswers.length > 0 && (
         <div className="space-y-6">
           <h3 className="text-2xl font-bold text-white mb-6">Ваши вопросы и ответы:</h3>
@@ -69,7 +84,7 @@ export const LessonProgress = ({
             {questionsAnswers.map((qa, index) => (
               <div 
                 key={index} 
-                className="bg-secondary/30 backdrop-blur-sm p-6 rounded-xl space-y-3 border border-primary/20 hover:border-primary/40 transition-colors duration-300"
+                className="bg-secondary/30 backdrop-blur-sm p-4 sm:p-6 rounded-xl space-y-3 border border-primary/20 hover:border-primary/40 transition-colors duration-300"
               >
                 <p className="text-primary-light font-semibold">{qa.question}</p>
                 <p className="text-gray-300">{qa.answer}</p>
@@ -78,16 +93,6 @@ export const LessonProgress = ({
           </div>
         </div>
       )}
-
-      <div className="pt-8">
-        <Button
-          onClick={completeLesson}
-          disabled={isCompleting}
-          className="w-full bg-gradient-to-r from-primary to-primary-hover text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-        >
-          Завершить урок
-        </Button>
-      </div>
     </div>
   );
 };
