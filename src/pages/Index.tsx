@@ -1,4 +1,4 @@
-import { Brain, Upload, Mic, ArrowRight } from "lucide-react";
+import { Brain, Upload, Mic, ArrowRight, BookOpen, Users, HelpCircle } from "lucide-react";
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer";
 import { useNavigate } from "react-router-dom";
@@ -43,41 +43,132 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-20 px-4 bg-secondary">
+        {/* Новая эра обучения */}
+        <section className="py-20 px-4 bg-gradient-to-b from-secondary to-secondary-dark">
           <div className="container mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
-              Преимущества обучения
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="animate-fade-in">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                  Новая эра обучения
+                </h2>
+                <p className="text-gray-300 mb-8">
+                  Используйте силу искусственного интеллекта для персонализированного обучения. 
+                  Наш ИИ-наставник адаптируется под ваш стиль обучения и помогает достичь максимальных результатов.
+                </p>
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4 text-white">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Brain className="w-6 h-6 text-primary" />
+                    </div>
+                    <span>Персонализированное обучение</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-white">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Upload className="w-6 h-6 text-primary" />
+                    </div>
+                    <span>Постоянное развитие</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-white">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Mic className="w-6 h-6 text-primary" />
+                    </div>
+                    <span>Интерактивные уроки</span>
+                  </div>
+                </div>
+              </div>
+              <div className="relative animate-fade-in">
+                <div className="absolute inset-0 bg-gradient-radial from-primary/20 to-transparent rounded-full blur-3xl"></div>
+                <div className="relative bg-secondary-dark p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                  <BookOpen className="w-16 h-16 text-primary mb-6" />
+                  <h3 className="text-2xl font-bold text-white mb-4">Инновационный подход</h3>
+                  <p className="text-gray-400">
+                    Используйте современные технологии для эффективного обучения и развития навыков бизнес-аналитика
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Пройти обучение */}
+        <section className="py-20 px-4 bg-gradient-to-b from-secondary-dark to-secondary">
+          <div className="container mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 animate-fade-in">
+              Пройти обучение
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-gradient-radial from-secondary-hover to-secondary p-8 rounded-2xl text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Brain className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-4">ИИ-наставник</h3>
-                <p className="text-gray-400">
-                  Персональный ИИ-ассистент поможет освоить материал в удобном для вас темпе
-                </p>
+              <div className="group p-8 rounded-2xl bg-secondary-hover border border-white/10 transition-all duration-300 hover:scale-105 animate-fade-in">
+                <Users className="w-12 h-12 text-primary mb-6 mx-auto" />
+                <h3 className="text-xl font-bold text-white mb-4">Начальный уровень</h3>
+                <p className="text-gray-400 mb-6">Основы бизнес-анализа и базовые инструменты</p>
+                <button 
+                  onClick={handleStartLearning}
+                  className="bg-primary/10 hover:bg-primary/20 text-primary px-6 py-2 rounded-full transition-colors"
+                >
+                  Начать
+                </button>
               </div>
-              
-              <div className="bg-gradient-radial from-secondary-hover to-secondary p-8 rounded-2xl text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Upload className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-4">Практика</h3>
-                <p className="text-gray-400">
-                  Реальные проекты и задачи от действующих бизнес-аналитиков
-                </p>
+              <div className="group p-8 rounded-2xl bg-secondary-hover border border-white/10 transition-all duration-300 hover:scale-105 animate-fade-in delay-100">
+                <Users className="w-12 h-12 text-primary mb-6 mx-auto" />
+                <h3 className="text-xl font-bold text-white mb-4">Средний уровень</h3>
+                <p className="text-gray-400 mb-6">Продвинутые техники и методологии</p>
+                <button 
+                  onClick={handleStartLearning}
+                  className="bg-primary/10 hover:bg-primary/20 text-primary px-6 py-2 rounded-full transition-colors"
+                >
+                  Начать
+                </button>
               </div>
-              
-              <div className="bg-gradient-radial from-secondary-hover to-secondary p-8 rounded-2xl text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Mic className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-4">Поддержка</h3>
-                <p className="text-gray-400">
-                  Круглосуточная поддержка от кураторов и сообщества студентов
-                </p>
+              <div className="group p-8 rounded-2xl bg-secondary-hover border border-white/10 transition-all duration-300 hover:scale-105 animate-fade-in delay-200">
+                <Users className="w-12 h-12 text-primary mb-6 mx-auto" />
+                <h3 className="text-xl font-bold text-white mb-4">Продвинутый уровень</h3>
+                <p className="text-gray-400 mb-6">Экспертные навыки и реальные проекты</p>
+                <button 
+                  onClick={handleStartLearning}
+                  className="bg-primary/10 hover:bg-primary/20 text-primary px-6 py-2 rounded-full transition-colors"
+                >
+                  Начать
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Топ 10 вопросов */}
+        <section className="py-20 px-4 bg-gradient-to-b from-secondary to-[#0A0A0A]">
+          <div className="container mx-auto">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center animate-fade-in">
+                Топ 10 вопросов
+              </h2>
+              <div className="space-y-6">
+                {[
+                  "Как начать карьеру бизнес-аналитика?",
+                  "Какие навыки необходимы бизнес-аналитику?",
+                  "Сколько зарабатывает бизнес-аналитик?",
+                  "Как составлять технические задания?",
+                  "Какие инструменты использует бизнес-аналитик?",
+                  "Как проводить интервью с заказчиком?",
+                  "Что такое user story и как их писать?",
+                  "Как создавать эффективные презентации?",
+                  "Как оценивать риски проекта?",
+                  "Как работать с требованиями заказчика?"
+                ].map((question, index) => (
+                  <div 
+                    key={index}
+                    className="group p-6 rounded-xl bg-secondary-hover border border-white/10 transition-all duration-300 hover:border-primary/50 animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                        <HelpCircle className="w-5 h-5 text-primary" />
+                      </div>
+                      <h3 className="text-lg font-medium text-white group-hover:text-primary transition-colors">
+                        {question}
+                      </h3>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
