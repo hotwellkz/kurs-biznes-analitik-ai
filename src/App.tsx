@@ -14,6 +14,7 @@ import Lesson from "./pages/Lesson";
 import Pricing from "./pages/Pricing";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Admin from "./pages/Admin";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -57,6 +58,7 @@ const App = () => (
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/admin" element={<Admin />} />
           <Route 
             path="/lesson/:lessonId" 
             element={

@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Coins } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button } from './ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { DesktopNav } from './navigation/DesktopNav';
+import { MobileNav } from './navigation/MobileNav';
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAuth, setShowAuth] = useState(false);
-  const [authMode, setAuthMode] = useState<'sign_in' | 'sign_up'>('sign_in');
   const [tokens, setTokens] = useState<number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -77,51 +76,13 @@ export const Navigation = () => {
             БизнесАналитик.AI
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link to="/" className="text-white hover:text-primary transition-colors">
-              Главная
-            </Link>
-            <Link to="/program" className="text-white hover:text-primary transition-colors">
-              Программа
-            </Link>
-            <Link to="/pricing" className="text-white hover:text-primary transition-colors">
-              Цены
-            </Link>
-            {isAuthenticated ? (
-              <>
-                <div className="flex items-center gap-2 text-white">
-                  <Coins className="w-5 h-5 text-primary" />
-                  <span>{tokens} токенов</span>
-                </div>
-                <Button 
-                  variant="ghost"
-                  onClick={handleSignOut}
-                  className="text-white hover:text-primary transition-colors"
-                >
-                  Выйти
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button 
-                  variant="ghost"
-                  onClick={() => openAuth('sign_in')}
-                  className="text-white hover:text-primary transition-colors"
-                >
-                  Вход
-                </Button>
-                <Button 
-                  onClick={() => openAuth('sign_up')}
-                  className="bg-primary hover:bg-primary-hover text-white transition-colors"
-                >
-                  Регистрация
-                </Button>
-              </>
-            )}
-          </div>
+          <DesktopNav
+            isAuthenticated={isAuthenticated}
+            tokens={tokens}
+            handleSignOut={handleSignOut}
+            openAuth={openAuth}
+          />
 
-          {/* Mobile Navigation Button */}
           <button 
             className="md:hidden text-white"
             onClick={() => setIsOpen(!isOpen)}
@@ -130,72 +91,15 @@ export const Navigation = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation Menu */}
         {isOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-secondary/95 backdrop-blur-sm py-4">
-            <div className="flex flex-col space-y-4 items-center">
-              <Link 
-                to="/" 
-                className="text-white hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Главная
-              </Link>
-              <Link 
-                to="/program" 
-                className="text-white hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Программа
-              </Link>
-              <Link 
-                to="/pricing" 
-                className="text-white hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Цены
-              </Link>
-              {isAuthenticated ? (
-                <>
-                  <div className="flex items-center gap-2 text-white">
-                    <Coins className="w-5 h-5 text-primary" />
-                    <span>{tokens} токенов</span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      handleSignOut();
-                      setIsOpen(false);
-                    }}
-                    className="text-white hover:text-primary transition-colors"
-                  >
-                    Выйти
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      openAuth('sign_in');
-                      setIsOpen(false);
-                    }}
-                    className="text-white hover:text-primary transition-colors"
-                  >
-                    Вход
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      openAuth('sign_up');
-                      setIsOpen(false);
-                    }}
-                    className="bg-primary hover:bg-primary-hover text-white transition-colors"
-                  >
-                    Регистрация
-                  </Button>
-                </>
-              )}
-            </div>
+            <MobileNav
+              isAuthenticated={isAuthenticated}
+              tokens={tokens}
+              handleSignOut={handleSignOut}
+              openAuth={openAuth}
+              setIsOpen={setIsOpen}
+            />
           </div>
         )}
       </div>
