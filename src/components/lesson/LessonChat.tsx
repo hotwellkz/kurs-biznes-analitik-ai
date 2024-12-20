@@ -112,18 +112,18 @@ export const LessonChat = ({ lessonId, tokens, setTokens }: LessonChatProps) => 
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-2">
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row gap-4">
         <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Задайте вопрос по теме урока..."
-          className="bg-secondary/30 backdrop-blur-sm text-white border-primary/20 focus:border-primary/40"
+          className="flex-grow bg-secondary/30 backdrop-blur-sm text-white border-primary/20 focus:border-primary/40 rounded-xl"
         />
         <Button
           onClick={() => askQuestion()}
           disabled={isLoading || !question}
-          className="bg-primary hover:bg-primary-hover text-white font-semibold px-6"
+          className="bg-gradient-to-r from-primary to-primary-hover text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70"
         >
           {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Спросить'}
         </Button>

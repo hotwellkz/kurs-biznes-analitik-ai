@@ -187,53 +187,69 @@ const Lesson = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0A0A0A]">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-secondary to-secondary-dark">
       <Navigation />
       <Breadcrumbs />
       
-      <main className="flex-grow container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <LessonHeader 
-            isLoading={isLoading}
-            onStartLesson={startLesson}
-          />
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-radial from-primary/10 to-transparent blur-3xl -z-10" />
+            <LessonHeader 
+              isLoading={isLoading}
+              onStartLesson={startLesson}
+            />
+          </div>
 
           {content && (
-            <>
-              <LessonProgress
-                lessonId={lessonId!}
-                content={content}
-                questionsAnswers={questionsAnswers}
-                onComplete={() => navigate('/program')}
-              />
-
-              <LessonContent
-                content={content}
-                onVoiceControlsChange={setShowVoiceControls}
-                onPlayingChange={setIsPlaying}
-                tokens={tokens}
-                setTokens={setTokens}
-              />
-
-              {showVoiceControls && (
-                <LessonControls 
-                  isPlaying={isPlaying}
-                  onPlayPause={handlePlayPause}
-                />
-              )}
-
-              <div className="mt-12 border-t border-primary/20 pt-8">
-                <LessonChat
+            <div className="space-y-12">
+              <div className="bg-secondary-dark/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 border border-primary/10 shadow-xl animate-slide-up">
+                <LessonProgress
                   lessonId={lessonId!}
+                  content={content}
+                  questionsAnswers={questionsAnswers}
+                  onComplete={() => navigate('/program')}
+                />
+              </div>
+
+              <div className="bg-secondary-dark/30 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <LessonContent
+                  content={content}
+                  onVoiceControlsChange={setShowVoiceControls}
+                  onPlayingChange={setIsPlaying}
                   tokens={tokens}
                   setTokens={setTokens}
                 />
               </div>
 
-              <div className="space-y-4">
+              {showVoiceControls && (
+                <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
+                  <div className="bg-secondary-dark/90 backdrop-blur-md rounded-full px-6 py-3 border border-primary/20 shadow-2xl">
+                    <LessonControls 
+                      isPlaying={isPlaying}
+                      onPlayPause={handlePlayPause}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent blur-2xl -z-10" />
+                <div className="border-t border-primary/10 pt-8">
+                  <div className="bg-secondary-dark/40 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <LessonChat
+                      lessonId={lessonId!}
+                      tokens={tokens}
+                      setTokens={setTokens}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-secondary-dark/30 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary/10 shadow-lg">
                 <LessonTest />
               </div>
-            </>
+            </div>
           )}
         </div>
       </main>

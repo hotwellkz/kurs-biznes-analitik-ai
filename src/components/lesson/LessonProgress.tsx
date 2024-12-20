@@ -51,26 +51,31 @@ export const LessonProgress = ({
 
   return (
     <div className="space-y-8">
-      <div className="prose max-w-none">
+      <div className="prose prose-invert max-w-none">
         <div 
           className="text-gray-200" 
           dangerouslySetInnerHTML={{ 
             __html: content
-              .replace(/### (.*?)\n/g, '<h3 class="text-white text-xl font-bold mb-4">$1</h3>\n')
-              .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>') 
+              .replace(/### (.*?)\n/g, '<h3 class="text-white text-2xl font-bold mb-6">$1</h3>\n')
+              .replace(/\*\*(.*?)\*\*/g, '<strong class="text-primary-light">$1</strong>') 
           }} 
         />
       </div>
 
       {questionsAnswers.length > 0 && (
         <div className="space-y-6">
-          <h3 className="text-2xl font-bold text-white mb-4">Ваши вопросы и ответы:</h3>
-          {questionsAnswers.map((qa, index) => (
-            <div key={index} className="bg-secondary/30 backdrop-blur-sm p-6 rounded-lg space-y-3 border border-primary/20">
-              <p className="text-primary-light font-semibold">{qa.question}</p>
-              <p className="text-gray-300">{qa.answer}</p>
-            </div>
-          ))}
+          <h3 className="text-2xl font-bold text-white mb-6">Ваши вопросы и ответы:</h3>
+          <div className="grid gap-4">
+            {questionsAnswers.map((qa, index) => (
+              <div 
+                key={index} 
+                className="bg-secondary/30 backdrop-blur-sm p-6 rounded-xl space-y-3 border border-primary/20 hover:border-primary/40 transition-colors duration-300"
+              >
+                <p className="text-primary-light font-semibold">{qa.question}</p>
+                <p className="text-gray-300">{qa.answer}</p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -78,7 +83,7 @@ export const LessonProgress = ({
         <Button
           onClick={completeLesson}
           disabled={isCompleting}
-          className="w-full bg-primary hover:bg-primary-hover text-white font-semibold"
+          className="w-full bg-gradient-to-r from-primary to-primary-hover text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
           Завершить урок
         </Button>

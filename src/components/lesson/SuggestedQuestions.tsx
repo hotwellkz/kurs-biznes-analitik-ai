@@ -14,14 +14,14 @@ export const SuggestedQuestions = ({ onQuestionSelect }: SuggestedQuestionsProps
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h3 className="text-xl font-semibold text-white">Популярные вопросы по теме:</h3>
-      <div className="grid gap-2">
+      <div className="grid gap-3">
         {suggestedQuestions.map((question, index) => (
           <Button
             key={index}
             variant="outline"
-            className="w-full text-left justify-start hover:bg-primary/20 text-gray-300"
+            className="w-full text-left justify-start bg-secondary-dark/50 hover:bg-primary/20 text-gray-300 border-primary/20 rounded-xl transition-colors duration-300"
             onClick={() => onQuestionSelect(question)}
           >
             {question}
