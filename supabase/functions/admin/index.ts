@@ -4,7 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
 serve(async (req) => {
@@ -13,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { password, userId } = await req.json()
+    const { password, userId, action } = await req.json()
 
     // Verify admin password
     const supabase = createClient(
@@ -34,10 +34,13 @@ serve(async (req) => {
       )
     }
 
-    if (req.method === 'DELETE' && userId) {
+    // Handle delete action
+    if (action === 'delete' && userId) {
+      console.log('Deleting user:', userId);
       const { error: deleteError } = await supabase.auth.admin.deleteUser(userId)
       
       if (deleteError) {
+        console.error('Error deleting user:', deleteError);
         throw deleteError
       }
 
@@ -48,9 +51,11 @@ serve(async (req) => {
     }
 
     // Get all users using service role
+    console.log('Fetching users list');
     const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers()
 
     if (usersError) {
+      console.error('Error fetching users:', usersError);
       throw usersError
     }
 
@@ -59,6 +64,7 @@ serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
+    console.error('Edge function error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

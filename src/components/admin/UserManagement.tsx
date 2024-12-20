@@ -35,17 +35,9 @@ export const UserManagement = () => {
         .select('*');
 
       // Call the Edge Function with admin password
-      const { data, error } = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({ password: '1888' })
-        }
-      ).then(res => res.json());
+      const { data, error } = await supabase.functions.invoke('admin', {
+        body: { password: '1888' }
+      });
 
       if (error || profilesError) throw new Error('Failed to fetch users');
 
@@ -62,6 +54,7 @@ export const UserManagement = () => {
 
       setUsers(combinedUsers || []);
     } catch (error) {
+      console.error('Error fetching users:', error);
       toast({
         title: "Ошибка",
         description: "Не удалось загрузить пользователей",
@@ -92,6 +85,7 @@ export const UserManagement = () => {
 
       fetchUsers();
     } catch (error) {
+      console.error('Error updating tokens:', error);
       toast({
         title: "Ошибка",
         description: "Не удалось обновить токены",
@@ -103,20 +97,13 @@ export const UserManagement = () => {
   const handleDeleteUser = async (userId: string) => {
     try {
       // Call the Edge Function to delete the user
-      const { error } = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({ 
-            password: '1888',
-            userId: userId 
-          })
+      const { error } = await supabase.functions.invoke('admin', {
+        body: { 
+          password: '1888',
+          userId: userId,
+          action: 'delete'
         }
-      ).then(res => res.json());
+      });
 
       if (error) throw error;
 
@@ -127,6 +114,7 @@ export const UserManagement = () => {
 
       fetchUsers();
     } catch (error) {
+      console.error('Error deleting user:', error);
       toast({
         title: "Ошибка",
         description: "Не удалось удалить пользователя",
