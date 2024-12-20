@@ -47,10 +47,24 @@ const Login = () => {
               className: {
                 button: 'bg-primary hover:bg-primary-hover',
                 input: 'bg-background',
+                container: 'w-full',
+                anchor: 'text-primary hover:text-primary-hover',
+                divider: 'bg-primary/20',
+                message: 'text-white',
               },
             }}
-            showLinks={false}
-            providers={[]}
+            providers={['google']}
+            localization={{
+              variables: {
+                sign_in: {
+                  email_label: 'Email адрес',
+                  password_label: 'Пароль',
+                  button_label: 'Войти',
+                  loading_button_label: 'Вход...',
+                  social_provider_text: 'Войти через {{provider}}',
+                },
+              },
+            }}
           />
           <div className="mt-4 text-center">
             <span className="text-gray-400">Нет аккаунта? </span>
