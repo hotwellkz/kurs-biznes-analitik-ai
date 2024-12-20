@@ -60,7 +60,7 @@ export const Reviews = () => {
         </div>
 
         <div 
-          className="flex gap-6 animate-slide"
+          className="flex gap-6"
           style={{
             animation: `slide ${isMobile ? 10 : 30}s linear infinite`,
           }}
@@ -99,16 +99,18 @@ export const Reviews = () => {
         onClose={() => setIsContactModalOpen(false)}
       />
 
-      <style jsx global>{`
-        @keyframes slide {
-          from {
-            transform: translateX(0);
+      <style>
+        {`
+          @keyframes slide {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-100%);
+            }
           }
-          to {
-            transform: translateX(-100%);
-          }
-        }
-      `}</style>
+        `}
+      </style>
     </section>
   );
 };
