@@ -55,9 +55,10 @@ export const Auth = ({ isOpen, onClose, mode = 'sign_in' }: AuthProps) => {
             input: 'bg-background',
             divider: 'bg-primary/20',
             message: 'text-white',
+            container: 'w-full',
+            anchor: 'text-primary hover:text-primary-hover',
           },
         }}
-        showLinks={true}
         providers={['google']}
         localization={{
           variables: {
