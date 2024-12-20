@@ -81,10 +81,16 @@ export const Chat = () => {
 
       if (chatError) throw chatError;
 
-      // Reload the page to show the new answer
-      window.location.reload();
+      // Instead of reloading the page, we'll trigger a re-render of the parent
+      // by forcing a re-fetch of the chat history
+      window.dispatchEvent(new Event('chatUpdated'));
 
       setQuestion('');
+      
+      toast({
+        title: "Успешно",
+        description: "Ответ получен",
+      });
 
     } catch (error) {
       console.error('Error:', error);
