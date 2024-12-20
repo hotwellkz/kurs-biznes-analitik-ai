@@ -50,7 +50,29 @@ export const ModuleAccordion = ({ completedLessons }: ModuleAccordionProps) => {
             </ul>
           </div>
           <div>
-            <h3 className="text-white font-semibold mb-2">Урок 1.2: Жизненный цикл разработки (SDLC)</h3>
+            <Link 
+              to="/lesson/1.2"
+              className={`flex items-center gap-2 text-white font-semibold mb-2 hover:text-primary transition-colors ${
+                completedLessons.includes('1.2') ? 'text-green-500' : ''
+              }`}
+            >
+              {completedLessons.includes('1.2') && (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              )}
+              Урок 1.2: Жизненный цикл разработки (SDLC)
+            </Link>
             <ul className="list-disc list-inside space-y-2 text-gray-400">
               <li>Основные этапы SDLC</li>
               <li>Роль бизнес-аналитика на каждом этапе</li>
@@ -60,6 +82,7 @@ export const ModuleAccordion = ({ completedLessons }: ModuleAccordionProps) => {
           </div>
         </AccordionContent>
       </AccordionItem>
+
       <AccordionItem value="module-2" className="border-none">
         <AccordionTrigger className="bg-secondary/50 hover:bg-secondary px-6 py-4 rounded-lg text-white hover:no-underline">
           Модуль 2: Основы анализа требований

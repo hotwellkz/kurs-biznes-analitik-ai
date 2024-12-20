@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -33,8 +34,32 @@ const Lesson = () => {
     setIsPlaying(!isPlaying);
   };
 
+  const getMetaDescription = () => {
+    if (lessonId === '1.2') {
+      return 'Изучите основные этапы SDLC, роль бизнес-аналитика в каждой фазе разработки, сравнение методологий Agile и Waterfall. Практические примеры и интерактивное обучение с ИИ-наставником.';
+    }
+    return 'Онлайн-курс по бизнес-анализу с персональным ИИ-наставником. Практические знания и навыки для успешной карьеры бизнес-аналитика.';
+  };
+
+  const getTitle = () => {
+    if (lessonId === '1.2') {
+      return 'Основные этапы SDLC | Жизненный цикл разработки ПО | БизнесАналитик.AI';
+    }
+    return 'Обучение бизнес-анализу | БизнесАналитик.AI';
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-secondary to-secondary-dark overflow-x-hidden">
+      <Helmet>
+        <title>{getTitle()}</title>
+        <meta name="description" content={getMetaDescription()} />
+        <meta name="keywords" content="SDLC, этапы SDLC, жизненный цикл разработки, бизнес-анализ, Agile, Waterfall, роль бизнес-аналитика" />
+        <meta property="og:title" content={getTitle()} />
+        <meta property="og:description" content={getMetaDescription()} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={`https://businessanalyst.ai/lesson/${lessonId}`} />
+      </Helmet>
+
       <Navigation />
       <Breadcrumbs />
       

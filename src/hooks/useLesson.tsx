@@ -79,6 +79,17 @@ export const useLesson = (lessonId: string) => {
     checkAuth();
   }, [navigate, lessonId, toast]);
 
+  const getPromptForLesson = (lessonId: string) => {
+    switch (lessonId) {
+      case '1.1':
+        return 'Расскажи подробно как будто ты преподаватель и преподаешь урок на тему: Кто такой бизнес-аналитик? Основные роли и обязанности, Ключевые навыки и инструменты, Примеры задач';
+      case '1.2':
+        return 'Расскажи подробно как будто ты преподаватель и преподаешь урок на тему: Жизненный цикл разработки (SDLC). Основные этапы SDLC, Роль бизнес-аналитика на каждом этапе, Agile vs. Waterfall';
+      default:
+        return '';
+    }
+  };
+
   const startLesson = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -109,7 +120,7 @@ export const useLesson = (lessonId: string) => {
         .update({ tokens: tokens! - 5 })
         .eq('id', session.user.id)
         .select()
-        .maybeSingle();
+        .single();
 
       if (profile) {
         setTokens(profile.tokens);
@@ -125,7 +136,7 @@ export const useLesson = (lessonId: string) => {
             },
             {
               role: 'user',
-              content: 'Расскажи подробно как будто ты преподаватель и преподаешь урок на тему: Кто такой бизнес-аналитик? Основные роли и обязанности, Ключевые навыки и инструменты, Примеры задач'
+              content: getPromptForLesson(lessonId)
             }
           ]
         }
@@ -142,7 +153,7 @@ export const useLesson = (lessonId: string) => {
         .select()
         .eq('user_id', session.user.id)
         .eq('lesson_id', lessonId)
-        .maybeSingle();
+        .single();
 
       if (existingProgress) {
         // Update existing progress

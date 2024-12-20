@@ -1,24 +1,34 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from '@/hooks/use-toast';
+import { Button } from "@/components/ui/button";
+import { useParams } from 'react-router-dom';
 
-const testQuestions = [
-  {
-    question: "Какова основная роль бизнес-аналитика?",
-    options: [
-      "Только написание кода",
-      "Анализ бизнес-процессов и требований",
-      "Управление персоналом",
-      "Продажи продукта"
-    ],
-    correctAnswer: 1
-  },
+export const LessonTest = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showScore, setShowScore] = useState(false);
+  const { lessonId } = useParams();
+
+  const getQuestions = () => {
+    switch (lessonId) {
+      case '1.1':
+        return [
+          {
+            question: "Какова основная роль бизнес-аналитика в проекте?",
+            options: [
+              "Только написание документации",
+              "Связующее звено между бизнесом и IT-командой",
+              "Управление проектом",
+              "Разработка программного обеспечения"
+            ],
+            correctAnswer: 1
+          },
   {
     question: "Какой навык наиболее важен для бизнес-аналитика?",
     options: [
@@ -39,82 +49,137 @@ const testQuestions = [
     ],
     correctAnswer: 2
   }
-];
+        ];
+      case '1.2':
+        return [
+          {
+            question: "Что такое SDLC?",
+            options: [
+              "Система документооборота",
+              "Методология разработки ПО",
+              "Жизненный цикл разработки ПО",
+              "Система контроля версий"
+            ],
+            correctAnswer: 2
+          },
+          {
+            question: "Какое основное отличие Agile от Waterfall?",
+            options: [
+              "Agile дороже в реализации",
+              "Waterfall более гибкий",
+              "Agile предполагает итеративную разработку",
+              "В Waterfall нет документации"
+            ],
+            correctAnswer: 2
+          },
+          {
+            question: "На каком этапе SDLC начинается работа бизнес-аналитика?",
+            options: [
+              "Только при тестировании",
+              "На этапе планирования",
+              "После релиза",
+              "Только при разработке"
+            ],
+            correctAnswer: 1
+          },
+          {
+            question: "Какой артефакт НЕ создает бизнес-аналитик?",
+            options: [
+              "Бизнес-требования",
+              "User Stories",
+              "Программный код",
+              "Функциональные требования"
+            ],
+            correctAnswer: 2
+          },
+          {
+            question: "Что такое Sprint в Agile?",
+            options: [
+              "Встреча команды",
+              "Фиксированный период разработки",
+              "Название документа",
+              "Тип тестирования"
+            ],
+            correctAnswer: 1
+          }
+        ];
+      default:
+        return [];
+    }
+  };
 
-export const LessonTest = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
-  const { toast } = useToast();
+  const questions = getQuestions();
 
-  const handleAnswer = (answerIndex: number) => {
-    const isCorrect = answerIndex === testQuestions[currentQuestion].correctAnswer;
-    
-    if (isCorrect) {
-      setScore(prev => prev + 1);
+  const handleAnswerClick = (selectedAnswer: number) => {
+    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+      setScore(score + 2);
     }
 
     const nextQuestion = currentQuestion + 1;
-
-    if (nextQuestion < testQuestions.length) {
+    if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
-      // Вычисляем финальную оценку только когда все вопросы отвечены
-      const finalScore = Math.round((score + (isCorrect ? 1 : 0)) / testQuestions.length * 10);
-      toast({
-        title: "Тест завершен!",
-        description: `Ваша оценка: ${finalScore}/10`,
-      });
-      setIsOpen(false);
-      // Сбрасываем состояние для следующей попытки
-      setCurrentQuestion(0);
-      setScore(0);
+      setShowScore(true);
     }
   };
 
-  const startTest = () => {
+  const resetTest = () => {
     setCurrentQuestion(0);
     setScore(0);
-    setIsOpen(true);
+    setShowScore(false);
   };
 
   return (
-    <>
-      <Button
-        onClick={startTest}
-        className="bg-primary hover:bg-primary-hover"
-      >
-        Пройти тест
-      </Button>
-
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              Тест: Понимание роли бизнес-аналитика
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <p className="text-lg font-medium">
-              Вопрос {currentQuestion + 1} из {testQuestions.length}
+    <Dialog onOpenChange={(open) => !open && resetTest()}>
+      <DialogTrigger asChild>
+        <Button 
+          variant="outline"
+          className="w-full sm:w-auto border-primary/20 hover:bg-primary/5 text-secondary"
+        >
+          Пройти тест
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-secondary-dark/95 backdrop-blur-lg border-primary/20 text-white">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold mb-6">
+            {showScore ? "Результаты теста" : `Вопрос ${currentQuestion + 1} из ${questions.length}`}
+          </DialogTitle>
+        </DialogHeader>
+        
+        {showScore ? (
+          <div className="space-y-6 text-center">
+            <div className="text-4xl font-bold text-primary animate-fade-in">
+              {score} / {questions.length * 2}
+            </div>
+            <p className="text-gray-300">
+              {score === questions.length * 2 
+                ? "Отлично! Вы отлично усвоили материал!" 
+                : score >= questions.length 
+                  ? "Хороший результат! Продолжайте изучение материала." 
+                  : "Рекомендуем повторить материал урока."}
             </p>
-            <p className="text-lg">{testQuestions[currentQuestion].question}</p>
-            <div className="space-y-2">
-              {testQuestions[currentQuestion].options.map((option, index) => (
+            <Button onClick={resetTest} className="bg-primary hover:bg-primary-hover text-white">
+              Пройти тест заново
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <p className="text-lg text-gray-200">{questions[currentQuestion].question}</p>
+            <div className="grid gap-3">
+              {questions[currentQuestion].options.map((option, index) => (
                 <Button
                   key={index}
-                  onClick={() => handleAnswer(index)}
-                  className="w-full justify-start text-left"
                   variant="outline"
+                  className="w-full text-left justify-start hover:bg-primary/20 text-gray-300 border-primary/20"
+                  onClick={() => handleAnswerClick(index)}
                 >
                   {option}
                 </Button>
               ))}
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
-    </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
