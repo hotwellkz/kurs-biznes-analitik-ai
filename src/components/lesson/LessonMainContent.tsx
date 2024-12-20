@@ -15,14 +15,14 @@ export const LessonMainContent = ({
   onComplete
 }: LessonMainContentProps) => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-4 sm:px-0">
       {/* Контент урока */}
       <div className="prose prose-invert max-w-none">
         <div 
           className="text-gray-200" 
           dangerouslySetInnerHTML={{ 
             __html: content
-              .replace(/### (.*?)\n/g, '<h3 class="text-white text-2xl font-bold mb-6">$1</h3>\n')
+              .replace(/### (.*?)\n/g, '<h3 class="text-white text-2xl font-bold mb-6 break-words">$1</h3>\n')
               .replace(/\*\*(.*?)\*\*/g, '<strong class="text-primary-light">$1</strong>') 
           }} 
         />
@@ -34,7 +34,7 @@ export const LessonMainContent = ({
         <Button
           onClick={onComplete}
           disabled={isCompleting}
-          className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-hover text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-hover text-white font-semibold py-4 sm:py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
           Завершить урок
         </Button>
@@ -50,8 +50,8 @@ export const LessonMainContent = ({
                 key={index} 
                 className="bg-secondary/30 backdrop-blur-sm p-4 sm:p-6 rounded-xl space-y-3 border border-primary/20 hover:border-primary/40 transition-colors duration-300"
               >
-                <p className="text-primary-light font-semibold">{qa.question}</p>
-                <p className="text-gray-300">{qa.answer}</p>
+                <p className="text-primary-light font-semibold break-words">{qa.question}</p>
+                <p className="text-gray-300 break-words">{qa.answer}</p>
               </div>
             ))}
           </div>

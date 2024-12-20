@@ -11,11 +11,6 @@ import { LessonControls } from '@/components/lesson/LessonControls';
 import { LessonChat } from '@/components/lesson/LessonChat';
 import { LessonProgress } from '@/components/lesson/LessonProgress';
 
-interface QA {
-  question: string;
-  answer: string;
-}
-
 const Lesson = () => {
   const { lessonId } = useParams();
   const navigate = useNavigate();
@@ -186,11 +181,11 @@ const Lesson = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-secondary to-secondary-dark">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-secondary to-secondary-dark overflow-x-hidden">
       <Navigation />
       <Breadcrumbs />
       
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+      <main className="flex-grow container mx-auto py-8 sm:py-12 lg:py-16">
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-radial from-primary/10 to-transparent blur-3xl -z-10" />
@@ -203,7 +198,7 @@ const Lesson = () => {
           {content && (
             <div className="space-y-8 sm:space-y-12">
               {/* Кнопки управления контентом */}
-              <div className="bg-secondary-dark/30 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="bg-secondary-dark/30 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300 mx-4 sm:mx-0">
                 <LessonContent
                   content={content}
                   onVoiceControlsChange={setShowVoiceControls}
@@ -214,7 +209,7 @@ const Lesson = () => {
               </div>
 
               {/* Основной контент урока */}
-              <div className="bg-secondary-dark/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-xl animate-slide-up">
+              <div className="bg-secondary-dark/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-xl animate-slide-up mx-4 sm:mx-0">
                 <LessonProgress
                   lessonId={lessonId!}
                   content={content}
@@ -224,7 +219,7 @@ const Lesson = () => {
               </div>
 
               {showVoiceControls && (
-                <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
+                <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in w-[calc(100%-2rem)] sm:w-auto">
                   <div className="bg-secondary-dark/90 backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-primary/20 shadow-2xl">
                     <LessonControls 
                       isPlaying={isPlaying}
@@ -238,7 +233,7 @@ const Lesson = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent blur-2xl -z-10" />
                 <div className="border-t border-primary/10 pt-8">
-                  <div className="bg-secondary-dark/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <div className="bg-secondary-dark/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-primary/10 shadow-lg hover:shadow-xl transition-shadow duration-300 mx-4 sm:mx-0">
                     <LessonChat
                       lessonId={lessonId!}
                       tokens={tokens}

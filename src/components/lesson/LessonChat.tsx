@@ -112,7 +112,7 @@ export const LessonChat = ({ lessonId, tokens, setTokens }: LessonChatProps) => 
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-4 sm:px-0">
       <div className="flex flex-col sm:flex-row gap-4">
         <Input
           value={question}
@@ -123,7 +123,7 @@ export const LessonChat = ({ lessonId, tokens, setTokens }: LessonChatProps) => 
         <Button
           onClick={() => askQuestion()}
           disabled={isLoading || !question}
-          className="bg-gradient-to-r from-primary to-primary-hover text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70"
+          className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-hover text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70"
         >
           {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Спросить'}
         </Button>
