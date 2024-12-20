@@ -32,34 +32,35 @@ export const Auth = ({ isOpen, onClose, mode = 'sign_in' }: AuthProps) => {
     }
   });
 
+  const handleGiftModalClose = () => {
+    setShowGiftModal(false);
+    navigate('/program');
+  };
+
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md">
-          <SupabaseAuth
-            supabaseClient={supabase}
-            view={mode}
-            appearance={{
-              theme: ThemeSupa,
-              variables: {
-                default: {
-                  colors: {
-                    brand: '#FF3B3B',
-                    brandAccent: '#FF3B3B',
-                  },
-                },
+      <SupabaseAuth
+        supabaseClient={supabase}
+        view={mode}
+        appearance={{
+          theme: ThemeSupa,
+          variables: {
+            default: {
+              colors: {
+                brand: '#FF3B3B',
+                brandAccent: '#FF3B3B',
               },
-              className: {
-                button: 'bg-primary hover:bg-primary-hover',
-                input: 'bg-background',
-              },
-            }}
-            showLinks={true}
-            providers={[]}
-          />
-        </DialogContent>
-      </Dialog>
-      <AuthModal isOpen={showGiftModal} onClose={() => setShowGiftModal(false)} />
+            },
+          },
+          className: {
+            button: 'bg-primary hover:bg-primary-hover',
+            input: 'bg-background',
+          },
+        }}
+        showLinks={true}
+        providers={[]}
+      />
+      <AuthModal isOpen={showGiftModal} onClose={handleGiftModalClose} />
     </>
   );
 };

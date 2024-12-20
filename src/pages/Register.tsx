@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
@@ -8,11 +8,14 @@ import { AuthModal } from '@/components/AuthModal';
 
 const Register = () => {
   const navigate = useNavigate();
+  const [showGiftModal, setShowGiftModal] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN') {
-        navigate('/program');
+        if (session?.user) {
+          setShowGiftModal(true);
+        }
       }
     });
 
@@ -20,6 +23,11 @@ const Register = () => {
       subscription.unsubscribe();
     };
   }, [navigate]);
+
+  const handleGiftModalClose = () => {
+    setShowGiftModal(false);
+    navigate('/program');
+  };
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center p-4">
@@ -61,6 +69,7 @@ const Register = () => {
           </div>
         </div>
       </div>
+      <AuthModal isOpen={showGiftModal} onClose={handleGiftModalClose} />
     </div>
   );
 };
