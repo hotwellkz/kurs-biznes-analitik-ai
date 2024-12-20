@@ -62,7 +62,26 @@ const Login = () => {
                   button_label: 'Войти',
                   loading_button_label: 'Вход...',
                   social_provider_text: 'Войти через {{provider}}',
+                  link_text: 'Уже есть аккаунт? Войти',
+                  email_input_placeholder: 'Ваш email адрес',
+                  password_input_placeholder: 'Ваш пароль'
                 },
+                magic_link: {
+                  email_input_label: 'Email адрес',
+                  button_label: 'Отправить магическую ссылку',
+                  loading_button_label: 'Отправка магической ссылки...',
+                  link_text: 'Отправить магическую ссылку',
+                  confirmation_text: 'Проверьте свою электронную почту для входа',
+                  email_input_placeholder: 'Ваш email адрес'
+                },
+                forgotten_password: {
+                  email_label: 'Email адрес',
+                  button_label: 'Отправить инструкции',
+                  loading_button_label: 'Отправка инструкций...',
+                  link_text: 'Забыли пароль?',
+                  confirmation_text: 'Проверьте свою электронную почту для сброса пароля',
+                  email_input_placeholder: 'Ваш email адрес'
+                }
               },
             }}
           />
