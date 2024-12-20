@@ -219,7 +219,6 @@ const Lesson = () => {
                   lessonId={lessonId!}
                   content={content}
                   questionsAnswers={questionsAnswers}
-                  onComplete={() => navigate('/program')}
                 />
               </div>
 
