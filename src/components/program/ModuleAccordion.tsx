@@ -14,7 +14,7 @@ export const ModuleAccordion = ({ completedLessons }: ModuleAccordionProps) => {
     <Accordion type="single" collapsible className="space-y-4">
       <Module1 completedLessons={completedLessons} />
       <Module2 completedLessons={completedLessons} />
-      <Module3 />
+      <Module3 completedLessons={completedLessons} />
       <Module4 />
       <Module5 />
     </Accordion>
