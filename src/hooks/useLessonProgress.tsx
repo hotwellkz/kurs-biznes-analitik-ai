@@ -1,6 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { QuestionAnswer } from '@/hooks/useLesson';
+import { Json } from '@/integrations/supabase/types';
+
+export interface QuestionAnswer {
+  question: string;
+  answer: string;
+}
 
 export const useLessonProgress = (lessonId: string) => {
   const [questionsAnswers, setQuestionsAnswers] = useState<QuestionAnswer[]>([]);
@@ -25,10 +30,16 @@ export const useLessonProgress = (lessonId: string) => {
     const updatedQA = [...questionsAnswers, newQA];
     setQuestionsAnswers(updatedQA);
 
+    // Convert QuestionAnswer[] to Json type for Supabase
+    const jsonQA: Json = updatedQA.map(qa => ({
+      question: qa.question,
+      answer: qa.answer
+    }));
+
     await supabase
       .from('lesson_progress')
       .update({
-        questions_answers: updatedQA
+        questions_answers: jsonQA
       })
       .eq('user_id', userId)
       .eq('lesson_id', lessonId);
