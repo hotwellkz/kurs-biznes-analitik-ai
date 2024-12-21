@@ -35,6 +35,9 @@ const Lesson = () => {
   };
 
   const getMetaDescription = () => {
+    if (lessonId === '3.1') {
+      return 'Изучите методы бизнес-анализа: SWOT, PESTEL и другие. Подробное описание методов анализа с практическими примерами применения. Интерактивное обучение с ИИ-наставником и тестированием знаний.';
+    }
     if (lessonId === '1.2') {
       return 'Изучите основные этапы SDLC, роль бизнес-аналитика в каждой фазе разработки, сравнение методологий Agile и Waterfall. Практические примеры и интерактивное обучение с ИИ-наставником.';
     }
@@ -42,10 +45,27 @@ const Lesson = () => {
   };
 
   const getTitle = () => {
+    if (lessonId === '3.1') {
+      return 'SWOT, PESTEL и другие методы анализа | Методы бизнес-анализа | БизнесАналитик.AI';
+    }
     if (lessonId === '1.2') {
       return 'Основные этапы SDLC | Жизненный цикл разработки ПО | БизнесАналитик.AI';
     }
     return 'Обучение бизнес-анализу | БизнесАналитик.AI';
+  };
+
+  const getKeywords = () => {
+    if (lessonId === '3.1') {
+      return 'SWOT анализ, PESTEL анализ, методы бизнес-анализа, бизнес-аналитика, стратегический анализ, анализ внешней среды, анализ внутренней среды';
+    }
+    if (lessonId === '1.2') {
+      return 'SDLC, этапы SDLC, жизненный цикл разработки, бизнес-анализ, Agile, Waterfall, роль бизнес-аналитика';
+    }
+    return 'бизнес-анализ, обучение бизнес-анализу, курсы бизнес-анализ';
+  };
+
+  const getCanonicalUrl = () => {
+    return `https://бизнесаналитик.ai/lesson/${lessonId}`;
   };
 
   return (
@@ -53,11 +73,17 @@ const Lesson = () => {
       <Helmet>
         <title>{getTitle()}</title>
         <meta name="description" content={getMetaDescription()} />
-        <meta name="keywords" content="SDLC, этапы SDLC, жизненный цикл разработки, бизнес-анализ, Agile, Waterfall, роль бизнес-аналитика" />
+        <meta name="keywords" content={getKeywords()} />
         <meta property="og:title" content={getTitle()} />
         <meta property="og:description" content={getMetaDescription()} />
         <meta property="og:type" content="article" />
-        <link rel="canonical" href={`https://businessanalyst.ai/lesson/${lessonId}`} />
+        <meta property="og:url" content={getCanonicalUrl()} />
+        <link rel="canonical" href={getCanonicalUrl()} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={getTitle()} />
+        <meta name="twitter:description" content={getMetaDescription()} />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="БизнесАналитик.AI" />
       </Helmet>
 
       <Navigation />
