@@ -5,6 +5,7 @@ import { lesson1_2_questions } from './questions/lesson1-2';
 import { lesson2_1_questions } from './questions/lesson2-1';
 import { lesson2_2_questions } from './questions/lesson2-2';
 import { lesson2_3_questions } from './questions/lesson2-3';
+import { lesson3_1_questions } from './questions/lesson3-1';
 
 interface Question {
   question: string;
@@ -35,6 +36,9 @@ export const useTestQuestions = () => {
         break;
       case '2.3':
         setQuestions(lesson2_3_questions);
+        break;
+      case '3.1':
+        setQuestions(lesson3_1_questions);
         break;
       default:
         setQuestions([]);
