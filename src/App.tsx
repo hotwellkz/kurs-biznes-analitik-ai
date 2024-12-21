@@ -33,7 +33,7 @@ const AuthWrapper = () => {
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN') {
-        navigate('/program');
+        navigate('/'); // Changed from '/program' to '/'
       }
     });
   }, [navigate]);
