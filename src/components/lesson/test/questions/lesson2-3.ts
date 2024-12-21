@@ -1,4 +1,4 @@
-export const questions = [
+export const lesson2_3_questions = [
   {
     question: "Что является основной целью управления изменениями требований?",
     options: [
