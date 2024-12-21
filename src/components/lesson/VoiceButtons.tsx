@@ -20,27 +20,32 @@ export const VoiceButtons = ({
         onClick={onPlayFreeVoice}
         disabled={isVoiceLoading || isPlaying}
         variant="outline"
-        className="border-primary/20 hover:bg-primary/5 text-secondary"
+        className="relative overflow-hidden border-primary/20 hover:bg-primary/5 text-secondary group"
       >
         {isVoiceLoading ? (
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
         ) : (
-          <Volume2 className="w-4 h-4 mr-2" />
+          <Volume2 className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
         )}
-        Озвучить бесплатно
+        <span className="relative z-10">Озвучить бесплатно</span>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </Button>
 
       <Button
         onClick={onPlayPremiumVoice}
         disabled={isVoiceLoading || isPlaying}
-        className="bg-primary hover:bg-primary-hover text-white"
+        className="relative overflow-hidden bg-gradient-to-r from-primary to-primary-hover text-white group"
       >
         {isVoiceLoading ? (
-          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          <>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-light/20 to-transparent animate-pulse" />
+          </>
         ) : (
-          <Crown className="w-4 h-4 mr-2" />
+          <Crown className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
         )}
-        Озвучить красивым голосом (45 токенов)
+        <span className="relative z-10">Озвучить красивым голосом (45 токенов)</span>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-light/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </Button>
     </>
   );
