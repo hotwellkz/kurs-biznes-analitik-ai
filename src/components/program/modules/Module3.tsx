@@ -65,12 +65,27 @@ export const Module3 = ({ completedLessons = [] }: Module3Props) => {
           </Link>
         </div>
         <div>
-          <h3 className="text-white font-semibold mb-2">Урок 3.3: Инструменты аналитика</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-400">
-            <li>Обзор инструментов (Jira, Confluence, MS Visio)</li>
-            <li>Практика работы с одним из инструментов</li>
-            <li>Тест: Навыки работы с инструментами</li>
-          </ul>
+          <Link 
+            to="/lesson/3.3"
+            className={cn(
+              "block hover:bg-primary/10 rounded-lg p-4 transition-colors",
+              completedLessons.includes('3.3') && "text-primary"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              {completedLessons.includes('3.3') && (
+                <Check className="w-5 h-5 text-primary" />
+              )}
+              <div>
+                <h3 className="text-white font-semibold mb-2">Урок 3.3: Инструменты аналитика</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-400">
+                  <li>Обзор инструментов (Jira, Confluence, MS Visio)</li>
+                  <li>Практика работы с одним из инструментов</li>
+                  <li>Тест: Навыки работы с инструментами</li>
+                </ul>
+              </div>
+            </div>
+          </Link>
         </div>
       </AccordionContent>
     </AccordionItem>

@@ -9,6 +9,8 @@ export const useLessonContent = (lessonId: string) => {
 
   const getPromptForLesson = (lessonId: string) => {
     switch (lessonId) {
+      case '3.3':
+        return 'Расскажи подробно как будто ты преподаватель и преподаешь урок на тему: "Инструменты аналитика Обзор инструментов (Jira, Confluence, MS Visio), Практика работы с одним из инструментов"';
       case '3.2':
         return 'Расскажи подробно как будто ты преподаватель и преподаешь Курс Бизнес Аналитик урок на тему: "Моделирование процессов Основы BPMN (Business Process Model and Notation), Построение диаграмм процессов"';
       case '3.1':

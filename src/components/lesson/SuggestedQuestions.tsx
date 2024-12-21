@@ -10,6 +10,14 @@ export const SuggestedQuestions = ({ onQuestionSelect }: SuggestedQuestionsProps
 
   const getSuggestedQuestions = () => {
     switch (lessonId) {
+      case '3.3':
+        return [
+          "Какие основные функции Jira используются в работе бизнес-аналитика?",
+          "Как эффективно организовать документацию в Confluence?",
+          "Какие лучшие практики при создании диаграмм в MS Visio?",
+          "Как интегрировать Jira и Confluence для эффективной работы?",
+          "Какие альтернативные инструменты можно использовать вместо MS Visio?"
+        ];
       case '3.2':
         return [
           "Какие основные элементы BPMN используются для моделирования процессов?",
