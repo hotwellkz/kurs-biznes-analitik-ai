@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { LessonMainContent } from './LessonMainContent';
@@ -13,11 +13,24 @@ interface LessonProgressProps {
 export const LessonProgress = ({ 
   lessonId, 
   content, 
-  questionsAnswers,
+  questionsAnswers: initialQuestionsAnswers,
 }: LessonProgressProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isCompleting, setIsCompleting] = useState(false);
+  const [questionsAnswers, setQuestionsAnswers] = useState(initialQuestionsAnswers);
+
+  useEffect(() => {
+    const handleQuestionAnswered = (event: CustomEvent<{ question: string; answer: string }>) => {
+      setQuestionsAnswers(prev => [...prev, event.detail]);
+    };
+
+    window.addEventListener('questionAnswered', handleQuestionAnswered as EventListener);
+
+    return () => {
+      window.removeEventListener('questionAnswered', handleQuestionAnswered as EventListener);
+    };
+  }, []);
 
   const completeLesson = async () => {
     try {

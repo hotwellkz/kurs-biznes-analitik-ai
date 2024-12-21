@@ -94,8 +94,10 @@ export const LessonChat = ({ lessonId, tokens, setTokens }: LessonChatProps) => 
         .eq('user_id', session.user.id)
         .eq('lesson_id', lessonId);
 
-      // Reload the page to show the new Q&A
-      window.location.reload();
+      // Instead of reloading the page, we'll update the state
+      window.dispatchEvent(new CustomEvent('questionAnswered', { 
+        detail: { question: questionToAsk, answer } 
+      }));
 
       setQuestion('');
 
