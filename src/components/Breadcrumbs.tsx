@@ -10,7 +10,6 @@ export const Breadcrumbs = () => {
   
   const breadcrumbItems = {
     'program': 'Программа курса',
-    'lesson': 'Урок',
     'privacy': 'Политика конфиденциальности',
     'terms': 'Публичная оферта',
     'pricing': 'Тарифы и цены',
@@ -26,7 +25,8 @@ export const Breadcrumbs = () => {
       '2.1': 'Сбор требований',
       '2.2': 'Документирование требований',
       '2.3': 'Управление изменениями требований',
-      '3.1': 'SWOT, PESTEL и другие методы анализа'
+      '3.1': 'SWOT, PESTEL и другие методы анализа',
+      '3.2': 'Моделирование процессов'
     };
     return lessonTitles[lessonId] || lessonId;
   };
@@ -46,7 +46,7 @@ export const Breadcrumbs = () => {
             if (segment === 'lesson') {
               title = 'Урок';
             } else if (pathSegments[0] === 'lesson') {
-              title = getLessonTitle(segment);
+              title = `Урок ${segment}: ${getLessonTitle(segment)}`;
             }
 
             return (
