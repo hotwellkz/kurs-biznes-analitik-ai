@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -8,12 +7,24 @@ export const useAuth = () => {
   const { toast } = useToast();
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      toast({
+        title: "Ошибка при выходе",
+        description: error.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
     toast({
       title: "Выход выполнен успешно",
       description: "Вы успешно вышли из системы",
     });
-    navigate('/');
+    
+    // Принудительно перенаправляем на главную страницу
+    window.location.href = '/';
   };
 
   const openAuth = (mode: 'sign_in' | 'sign_up') => {
