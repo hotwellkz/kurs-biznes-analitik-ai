@@ -29,7 +29,8 @@ export const Breadcrumbs = () => {
       '3.2': 'Моделирование процессов',
       '3.3': 'Инструменты аналитика',
       '4.1': 'Основы проектного менеджмента',
-      '4.2': 'Agile и Scrum'
+      '4.2': 'Agile и Scrum',
+      '5.1': 'Кейсы реального мира'
     };
     return lessonTitles[lessonId] || lessonId;
   };

@@ -7,6 +7,7 @@ import { lesson2_3_questions } from './questions/lesson2-3';
 import { lesson3_1_questions } from './questions/lesson3-1';
 import { lesson3_2_questions } from './questions/lesson3-2';
 import { lesson4_1_questions } from './questions/lesson4-1';
+import { lesson5_1_questions } from './questions/lesson5-1';
 import { useParams } from 'react-router-dom';
 
 export const useTestQuestions = () => {
@@ -17,6 +18,8 @@ export const useTestQuestions = () => {
   useEffect(() => {
     const getQuestions = () => {
       switch (lessonId) {
+        case '5.1':
+          return lesson5_1_questions;
         case '1.1':
           return lesson1_1_questions;
         case '1.2':
