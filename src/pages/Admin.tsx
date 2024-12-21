@@ -7,7 +7,9 @@ import { useNavigate } from "react-router-dom";
 const Admin = () => {
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async (password: string): Promise<void> => {
+    // Here you would typically verify the admin password
+    // For now, we'll just navigate
     navigate('/program');
   };
 
