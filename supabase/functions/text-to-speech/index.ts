@@ -1,5 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { encode as encodeBase64 } from "https://deno.land/std@0.168.0/encoding/base64.ts";
 
 const ELEVEN_LABS_API_KEY = Deno.env.get('ELEVEN_LABS_API_KEY');
 const VOICE_ID = 'onwK4e9ZLuTAKqWW03F9'; // Daniel voice
@@ -18,17 +19,14 @@ serve(async (req) => {
   try {
     const { text } = await req.json();
     
-    // Проверяем длину текста
     if (!text || text.length === 0) {
       throw new Error('Text is required');
     }
 
     console.log(`Processing text of length: ${text.length}`);
 
-    // Если текст слишком длинный, разбиваем его на части
     if (text.length > MAX_CHUNK_LENGTH) {
       console.log('Text is too long, splitting into chunks');
-      // Берем только первую часть текста
       const truncatedText = text.slice(0, MAX_CHUNK_LENGTH);
       console.log(`Using truncated text of length: ${truncatedText.length}`);
       
@@ -59,7 +57,7 @@ serve(async (req) => {
       }
 
       const audioBuffer = await response.arrayBuffer();
-      const audioBase64 = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
+      const audioBase64 = encodeBase64(new Uint8Array(audioBuffer));
       const audioUrl = `data:audio/mpeg;base64,${audioBase64}`;
 
       return new Response(
@@ -94,7 +92,7 @@ serve(async (req) => {
       }
 
       const audioBuffer = await response.arrayBuffer();
-      const audioBase64 = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
+      const audioBase64 = encodeBase64(new Uint8Array(audioBuffer));
       const audioUrl = `data:audio/mpeg;base64,${audioBase64}`;
 
       return new Response(
