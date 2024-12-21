@@ -6,6 +6,7 @@ import { lesson2_2_questions } from './questions/lesson2-2';
 import { lesson2_3_questions } from './questions/lesson2-3';
 import { lesson3_1_questions } from './questions/lesson3-1';
 import { lesson3_2_questions } from './questions/lesson3-2';
+import { lesson4_1_questions } from './questions/lesson4-1';
 import { useParams } from 'react-router-dom';
 
 export const useTestQuestions = () => {
@@ -30,6 +31,8 @@ export const useTestQuestions = () => {
           return lesson3_1_questions;
         case '3.2':
           return lesson3_2_questions;
+        case '4.1':
+          return lesson4_1_questions;
         default:
           return [];
       }
