@@ -27,6 +27,12 @@ export const LessonHeader = ({ isLoading, onStartLesson }: LessonHeaderProps) =>
         return 'Урок 1.1: Кто такой бизнес-аналитик?';
       case '1.2':
         return 'Урок 1.2: Жизненный цикл разработки (SDLC)';
+      case '2.1':
+        return 'Урок 2.1: Сбор требований';
+      case '2.2':
+        return 'Урок 2.2: Документирование требований';
+      case '2.3':
+        return 'Урок 2.3: Управление изменениями требований';
       default:
         return 'Урок';
     }

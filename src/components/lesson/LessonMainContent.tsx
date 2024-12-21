@@ -1,5 +1,6 @@
 import { LessonTest } from './LessonTest';
 import { Button } from '@/components/ui/button';
+import { Share2 } from 'lucide-react';
 
 interface LessonMainContentProps {
   content: string;
@@ -14,6 +15,26 @@ export const LessonMainContent = ({
   isCompleting,
   onComplete
 }: LessonMainContentProps) => {
+  // Function to clean and format the text
+  const formatText = (text: string) => {
+    return text
+      // Replace headers
+      .replace(/### (.*?)(\n|$)/g, '<h3 class="text-white text-2xl font-bold mb-6 break-words">$1</h3>')
+      // Replace bold text
+      .replace(/\*\*(.*?)\*\*/g, '<span class="text-primary-light font-semibold">$1</span>')
+      // Replace any remaining markdown symbols
+      .replace(/[#*]/g, '')
+      // Format lists if present
+      .replace(/- (.*?)(\n|$)/g, '<li class="text-gray-300 ml-4">$1</li>')
+      // Add proper spacing for paragraphs
+      .replace(/\n\n/g, '</p><p class="mb-4">');
+  };
+
+  const shareAnswer = (question: string, answer: string) => {
+    const text = `Вопрос: ${question}\n\nОтвет: ${answer.replace(/<[^>]*>/g, '')}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
   return (
     <div className="space-y-8 px-4 sm:px-0">
       {/* Контент урока */}
@@ -21,9 +42,7 @@ export const LessonMainContent = ({
         <div 
           className="text-gray-200" 
           dangerouslySetInnerHTML={{ 
-            __html: content
-              .replace(/### (.*?)\n/g, '<h3 class="text-white text-2xl font-bold mb-6 break-words">$1</h3>\n')
-              .replace(/\*\*(.*?)\*\*/g, '<strong class="text-primary-light">$1</strong>') 
+            __html: formatText(content)
           }} 
         />
       </div>
@@ -50,8 +69,25 @@ export const LessonMainContent = ({
                 key={index} 
                 className="bg-secondary/30 backdrop-blur-sm p-4 sm:p-6 rounded-xl space-y-3 border border-primary/20 hover:border-primary/40 transition-colors duration-300"
               >
-                <p className="text-primary-light font-semibold break-words">{qa.question}</p>
-                <p className="text-gray-300 break-words">{qa.answer}</p>
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-grow">
+                    <p className="text-primary-light font-semibold break-words">{qa.question}</p>
+                    <div 
+                      className="text-gray-300 break-words mt-3"
+                      dangerouslySetInnerHTML={{ 
+                        __html: formatText(qa.answer)
+                      }}
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="shrink-0 border-primary/20 hover:bg-primary/5 text-secondary"
+                    onClick={() => shareAnswer(qa.question, qa.answer)}
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>

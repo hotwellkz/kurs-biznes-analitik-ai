@@ -15,7 +15,14 @@ serve(async (req) => {
   }
 
   try {
+    if (!openAIApiKey) {
+      console.error('OPENAI_API_KEY is not configured');
+      throw new Error('OPENAI_API_KEY is not configured');
+    }
+
     const { messages } = await req.json();
+    
+    console.log('Processing request with messages:', JSON.stringify(messages));
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -28,22 +35,34 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'Ты - опытный бизнес-аналитик и преподаватель, который помогает студентам освоить профессию бизнес-аналитика. Отвечай кратко и по существу, используя профессиональную терминологию.'
+            content: 'Ты - опытный преподаватель бизнес-анализа. Твоя задача - подробно и структурированно отвечать на вопросы студентов, используя практические примеры.'
           },
           ...messages
         ],
         temperature: 0.7,
+        max_tokens: 2000
       }),
     });
 
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('OpenAI API error:', error);
+      throw new Error(`OpenAI API error: ${error.error?.message || 'Unknown error'}`);
+    }
+
     const data = await response.json();
+    console.log('Received response from OpenAI:', JSON.stringify(data));
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('Error in chat function:', error);
+    return new Response(JSON.stringify({ 
+      error: error.message || 'Internal server error',
+      details: error.toString(),
+      timestamp: new Date().toISOString()
+    }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

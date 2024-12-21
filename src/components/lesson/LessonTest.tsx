@@ -10,14 +10,17 @@ import { Button } from "@/components/ui/button";
 import { TestQuestion } from './test/TestQuestion';
 import { TestResult } from './test/TestResult';
 import { useTestQuestions } from './test/useTestQuestions';
+import { Loader2 } from "lucide-react";
 
 export const LessonTest = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
-  const { questions } = useTestQuestions();
+  const { questions, isLoading } = useTestQuestions();
 
   const handleAnswerClick = (selectedAnswer: number) => {
+    if (!questions || !questions[currentQuestion]) return;
+
     if (selectedAnswer === questions[currentQuestion].correctAnswer) {
       setScore(score + 2);
     }
@@ -35,6 +38,31 @@ export const LessonTest = () => {
     setScore(0);
     setShowScore(false);
   };
+
+  if (isLoading) {
+    return (
+      <Button 
+        variant="outline"
+        className="w-full sm:w-auto border-primary/20 hover:bg-primary/5 text-secondary"
+        disabled
+      >
+        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+        Загрузка теста...
+      </Button>
+    );
+  }
+
+  if (!questions || questions.length === 0) {
+    return (
+      <Button 
+        variant="outline"
+        className="w-full sm:w-auto border-primary/20 hover:bg-primary/5 text-secondary"
+        disabled
+      >
+        Тест недоступен
+      </Button>
+    );
+  }
 
   return (
     <Dialog onOpenChange={(open) => !open && resetTest()}>
