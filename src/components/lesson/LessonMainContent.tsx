@@ -1,5 +1,6 @@
 import { LessonTest } from './LessonTest';
 import { Button } from '@/components/ui/button';
+import { Share2 } from 'lucide-react';
 
 interface LessonMainContentProps {
   content: string;
@@ -27,6 +28,11 @@ export const LessonMainContent = ({
       .replace(/- (.*?)(\n|$)/g, '<li class="text-gray-300 ml-4">$1</li>')
       // Add proper spacing for paragraphs
       .replace(/\n\n/g, '</p><p class="mb-4">');
+  };
+
+  const shareAnswer = (question: string, answer: string) => {
+    const text = `Вопрос: ${question}\n\nОтвет: ${answer.replace(/<[^>]*>/g, '')}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   return (
@@ -63,13 +69,25 @@ export const LessonMainContent = ({
                 key={index} 
                 className="bg-secondary/30 backdrop-blur-sm p-4 sm:p-6 rounded-xl space-y-3 border border-primary/20 hover:border-primary/40 transition-colors duration-300"
               >
-                <p className="text-primary-light font-semibold break-words">{qa.question}</p>
-                <div 
-                  className="text-gray-300 break-words"
-                  dangerouslySetInnerHTML={{ 
-                    __html: formatText(qa.answer)
-                  }}
-                />
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-grow">
+                    <p className="text-primary-light font-semibold break-words">{qa.question}</p>
+                    <div 
+                      className="text-gray-300 break-words mt-3"
+                      dangerouslySetInnerHTML={{ 
+                        __html: formatText(qa.answer)
+                      }}
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="shrink-0 border-primary/20 hover:bg-primary/5 text-secondary"
+                    onClick={() => shareAnswer(qa.question, qa.answer)}
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
