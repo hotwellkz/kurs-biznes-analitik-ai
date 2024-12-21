@@ -15,7 +15,8 @@ export const Breadcrumbs = () => {
     'pricing': 'Тарифы и цены',
     'login': 'Вход',
     'register': 'Регистрация',
-    'admin': 'Админ панель'
+    'admin': 'Админ панель',
+    '5.2': 'Финальный проект'
   };
 
   const getLessonTitle = (lessonId: string) => {
@@ -30,7 +31,8 @@ export const Breadcrumbs = () => {
       '3.3': 'Инструменты аналитика',
       '4.1': 'Основы проектного менеджмента',
       '4.2': 'Agile и Scrum',
-      '5.1': 'Кейсы реального мира'
+      '5.1': 'Кейсы реального мира',
+      '5.2': 'Финальный проект'
     };
     return lessonTitles[lessonId] || lessonId;
   };

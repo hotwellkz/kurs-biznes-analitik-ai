@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { lesson5_2_questions } from './questions/lesson5-2';
 import { lesson1_1_questions } from './questions/lesson1-1';
 import { lesson1_2_questions } from './questions/lesson1-2';
 import { lesson2_1_questions } from './questions/lesson2-1';
@@ -18,6 +19,8 @@ export const useTestQuestions = () => {
   useEffect(() => {
     const getQuestions = () => {
       switch (lessonId) {
+        case '5.2':
+          return lesson5_2_questions;
         case '5.1':
           return lesson5_1_questions;
         case '1.1':
