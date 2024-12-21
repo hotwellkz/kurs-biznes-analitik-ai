@@ -57,8 +57,8 @@ export const Auth = ({ isOpen, onClose, mode = 'sign_in' }: AuthProps) => {
             variables: {
               default: {
                 colors: {
-                  brand: '#FF3B3B',
-                  brandAccent: '#FF5252',
+                  brand: '#FFFFFF',
+                  brandAccent: '#F8F8F8',
                   inputBackground: 'transparent',
                   inputText: 'white',
                   inputPlaceholder: '#9CA3AF',
@@ -67,7 +67,7 @@ export const Auth = ({ isOpen, onClose, mode = 'sign_in' }: AuthProps) => {
             },
             className: {
               container: 'w-full',
-              button: 'bg-primary hover:bg-primary-hover transition-colors duration-200',
+              button: 'bg-white text-gray-900 hover:bg-gray-100 transition-colors duration-200',
               input: 'bg-secondary/50 border-gray-600 text-white placeholder-gray-400 focus:border-primary transition-colors duration-200',
               divider: 'bg-gray-600',
               message: 'text-white',
