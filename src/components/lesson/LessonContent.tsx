@@ -3,6 +3,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { VoiceButtons } from './VoiceButtons';
 import { ShareButton } from './ShareButton';
+import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
 
 interface LessonContentProps {
   content: string;
@@ -22,6 +24,7 @@ export const LessonContent = ({
   const { toast } = useToast();
   const [isVoiceLoading, setIsVoiceLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   const playFreeVoice = () => {
     if (!content) return;
@@ -72,18 +75,21 @@ export const LessonContent = ({
 
       setIsVoiceLoading(true);
 
-      const cleanText = content.replace(/[#*]/g, '');
-
-      const { data: profile } = await supabase
+      // Снимаем токены сразу после нажатия кнопки
+      const { data: profile, error: updateError } = await supabase
         .from('profiles')
         .update({ tokens: tokens! - 45 })
         .eq('id', session.user.id)
         .select()
         .single();
 
+      if (updateError) throw updateError;
+
       if (profile) {
         setTokens(profile.tokens);
       }
+
+      const cleanText = content.replace(/[#*]/g, '');
 
       const { data, error } = await supabase.functions.invoke('text-to-speech', {
         body: { text: cleanText }
@@ -91,6 +97,7 @@ export const LessonContent = ({
 
       if (error) throw error;
 
+      setAudioUrl(data.audioUrl);
       const audio = new Audio(data.audioUrl);
       audio.play();
       setIsPlaying(true);
@@ -115,6 +122,30 @@ export const LessonContent = ({
     }
   };
 
+  const handleDownload = async () => {
+    if (!audioUrl) return;
+
+    try {
+      const response = await fetch(audioUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'lesson-audio.mp3';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading audio:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось скачать аудио файл",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="flex flex-wrap gap-4">
       <VoiceButtons
@@ -124,6 +155,17 @@ export const LessonContent = ({
         onPlayPremiumVoice={playPremiumVoice}
       />
       <ShareButton content={content} />
+      {audioUrl && !isPlaying && (
+        <Button
+          onClick={handleDownload}
+          variant="outline"
+          className="relative overflow-hidden border-primary/20 hover:bg-primary/5 text-secondary group"
+        >
+          <Download className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
+          <span className="relative z-10">Скачать аудио</span>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </Button>
+      )}
     </div>
   );
 };
