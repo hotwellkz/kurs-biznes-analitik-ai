@@ -22,7 +22,11 @@ export const LessonMainContent = ({
       // Replace bold text
       .replace(/\*\*(.*?)\*\*/g, '<span class="text-primary-light font-semibold">$1</span>')
       // Replace any remaining markdown symbols
-      .replace(/[#*]/g, '');
+      .replace(/[#*]/g, '')
+      // Format lists if present
+      .replace(/- (.*?)(\n|$)/g, '<li class="text-gray-300 ml-4">$1</li>')
+      // Add proper spacing for paragraphs
+      .replace(/\n\n/g, '</p><p class="mb-4">');
   };
 
   return (
@@ -60,9 +64,12 @@ export const LessonMainContent = ({
                 className="bg-secondary/30 backdrop-blur-sm p-4 sm:p-6 rounded-xl space-y-3 border border-primary/20 hover:border-primary/40 transition-colors duration-300"
               >
                 <p className="text-primary-light font-semibold break-words">{qa.question}</p>
-                <p className="text-gray-300 break-words">
-                  {qa.answer.replace(/[#*]/g, '')} {/* Clean markdown from answers */}
-                </p>
+                <div 
+                  className="text-gray-300 break-words"
+                  dangerouslySetInnerHTML={{ 
+                    __html: formatText(qa.answer)
+                  }}
+                />
               </div>
             ))}
           </div>
