@@ -42,12 +42,27 @@ export const Module3 = ({ completedLessons = [] }: Module3Props) => {
           </Link>
         </div>
         <div>
-          <h3 className="text-white font-semibold mb-2">Урок 3.2: Моделирование процессов</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-400">
-            <li>Основы BPMN (Business Process Model and Notation)</li>
-            <li>Построение диаграмм процессов</li>
-            <li>Тест: Понимание BPMN</li>
-          </ul>
+          <Link 
+            to="/lesson/3.2"
+            className={cn(
+              "block hover:bg-primary/10 rounded-lg p-4 transition-colors",
+              completedLessons.includes('3.2') && "text-primary"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              {completedLessons.includes('3.2') && (
+                <Check className="w-5 h-5 text-primary" />
+              )}
+              <div>
+                <h3 className="text-white font-semibold mb-2">Урок 3.2: Моделирование процессов</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-400">
+                  <li>Основы BPMN (Business Process Model and Notation)</li>
+                  <li>Построение диаграмм процессов</li>
+                  <li>Тест: Понимание BPMN</li>
+                </ul>
+              </div>
+            </div>
+          </Link>
         </div>
         <div>
           <h3 className="text-white font-semibold mb-2">Урок 3.3: Инструменты аналитика</h3>
