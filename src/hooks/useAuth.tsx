@@ -7,24 +7,31 @@ export const useAuth = () => {
   const { toast } = useToast();
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    
-    if (error) {
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        throw error;
+      }
+
+      // Очищаем локальное хранилище
+      localStorage.clear();
+      
+      // Показываем уведомление об успешном выходе
+      toast({
+        title: "Выход выполнен успешно",
+        description: "Вы успешно вышли из системы",
+      });
+      
+      // Принудительно перенаправляем на главную страницу и перезагружаем
+      window.location.href = '/';
+    } catch (error: any) {
       toast({
         title: "Ошибка при выходе",
-        description: error.message,
+        description: error.message || "Произошла ошибка при выходе из системы",
         variant: "destructive"
       });
-      return;
     }
-
-    toast({
-      title: "Выход выполнен успешно",
-      description: "Вы успешно вышли из системы",
-    });
-    
-    // Принудительно перенаправляем на главную страницу
-    window.location.href = '/';
   };
 
   const openAuth = (mode: 'sign_in' | 'sign_up') => {
