@@ -51,13 +51,21 @@ export const useLessonContent = (lessonId: string) => {
       const lessonContent = data.choices[0].message.content;
       setContent(lessonContent);
 
-      await supabase
+      // Используем upsert вместо insert
+      const { error: upsertError } = await supabase
         .from('lesson_progress')
-        .upsert({
-          user_id: userId,
-          lesson_id: lessonId,
-          generated_content: lessonContent
-        });
+        .upsert(
+          {
+            user_id: userId,
+            lesson_id: lessonId,
+            generated_content: lessonContent
+          },
+          {
+            onConflict: 'user_id,lesson_id'
+          }
+        );
+
+      if (upsertError) throw upsertError;
 
       return true;
     } catch (error) {
