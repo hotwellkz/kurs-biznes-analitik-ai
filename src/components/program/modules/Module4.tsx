@@ -43,12 +43,27 @@ export const Module4 = ({ completedLessons = [] }: Module4Props) => {
         </div>
 
         <div>
-          <h3 className="text-white font-semibold mb-2">Урок 4.2: Agile и Scrum</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-400">
-            <li>Основы Agile</li>
-            <li>Роль бизнес-аналитика в Scrum-команде</li>
-            <li>Тест: Основы Agile</li>
-          </ul>
+          <Link 
+            to="/lesson/4.2"
+            className={cn(
+              "block hover:bg-primary/10 rounded-lg p-4 transition-colors",
+              completedLessons.includes('4.2') && "text-primary"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              {completedLessons.includes('4.2') && (
+                <Check className="w-5 h-5 text-primary" />
+              )}
+              <div>
+                <h3 className="text-white font-semibold mb-2">Урок 4.2: Agile и Scrum</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-400">
+                  <li>Основы Agile</li>
+                  <li>Роль бизнес-аналитика в Scrum-команде</li>
+                  <li>Тест: Основы Agile</li>
+                </ul>
+              </div>
+            </div>
+          </Link>
         </div>
       </AccordionContent>
     </AccordionItem>

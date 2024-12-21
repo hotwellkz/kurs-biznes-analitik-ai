@@ -10,6 +10,14 @@ export const SuggestedQuestions = ({ onQuestionSelect }: SuggestedQuestionsProps
 
   const getSuggestedQuestions = () => {
     switch (lessonId) {
+      case '4.2':
+        return [
+          "Какие основные принципы Agile методологии?",
+          "Какова роль бизнес-аналитика в Scrum команде?",
+          "Как проводить грумминг беклога в Scrum?",
+          "Какие артефакты создает бизнес-аналитик в Scrum проектах?",
+          "Как эффективно взаимодействовать с Product Owner?"
+        ];
       case '4.1':
         return [
           "Какие основные компоненты входят в понятие scope проекта?",
