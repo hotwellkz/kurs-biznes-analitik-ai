@@ -43,12 +43,27 @@ export const Module2 = ({ completedLessons = [] }: Module2Props) => {
         </div>
         
         <div>
-          <h3 className="text-white font-semibold mb-2">Урок 2.2: Документирование требований</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-400">
-            <li>Создание BRD (Business Requirements Document)</li>
-            <li>User stories и Acceptance criteria</li>
-            <li>Тест: Форматы и структура требований</li>
-          </ul>
+          <Link 
+            to="/lesson/2.2"
+            className={cn(
+              "block hover:bg-primary/10 rounded-lg p-4 transition-colors",
+              completedLessons.includes('2.2') && "text-primary"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              {completedLessons.includes('2.2') && (
+                <Check className="w-5 h-5 text-primary" />
+              )}
+              <div>
+                <h3 className="text-white font-semibold mb-2">Урок 2.2: Документирование требований</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-400">
+                  <li>Создание BRD (Business Requirements Document)</li>
+                  <li>User stories и Acceptance criteria</li>
+                  <li>Тест: Форматы и структура требований</li>
+                </ul>
+              </div>
+            </div>
+          </Link>
         </div>
         
         <div>
