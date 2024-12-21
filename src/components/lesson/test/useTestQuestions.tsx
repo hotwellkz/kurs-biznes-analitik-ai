@@ -10,8 +10,11 @@ interface Question {
 export const useTestQuestions = () => {
   const { lessonId } = useParams();
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+    
     switch (lessonId) {
       case '1.1':
         setQuestions([
@@ -232,7 +235,9 @@ export const useTestQuestions = () => {
       default:
         setQuestions([]);
     }
+    
+    setIsLoading(false);
   }, [lessonId]);
 
-  return { questions };
+  return { questions, isLoading };
 };
