@@ -17,6 +17,11 @@ export const LessonTest = () => {
   const [showScore, setShowScore] = useState(false);
   const { questions } = useTestQuestions();
 
+  // Проверяем наличие вопросов
+  if (!questions || questions.length === 0) {
+    return null;
+  }
+
   const handleAnswerClick = (selectedAnswer: number) => {
     if (selectedAnswer === questions[currentQuestion].correctAnswer) {
       setScore(score + 2);

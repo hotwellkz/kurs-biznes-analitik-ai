@@ -55,17 +55,7 @@ export const useLesson = (lessonId: string) => {
           .eq('lesson_id', lessonId)
           .maybeSingle();
 
-        // Create lesson progress if it doesn't exist
-        if (!lessonProgress) {
-          await supabase
-            .from('lesson_progress')
-            .insert({
-              user_id: session.user.id,
-              lesson_id: lessonId,
-              completed: false,
-              questions_answers: []
-            });
-        } else {
+        if (lessonProgress) {
           if (lessonProgress.generated_content) {
             setContent(lessonProgress.generated_content);
           }
@@ -126,6 +116,14 @@ export const useLesson = (lessonId: string) => {
 
       setIsLoading(true);
 
+      // Check if lesson progress already exists
+      const { data: existingProgress } = await supabase
+        .from('lesson_progress')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .eq('lesson_id', lessonId)
+        .maybeSingle();
+
       // Update tokens
       const { data: profile } = await supabase
         .from('profiles')
@@ -159,14 +157,23 @@ export const useLesson = (lessonId: string) => {
       const lessonContent = data.choices[0].message.content;
       setContent(lessonContent);
 
-      // Update lesson progress
-      await supabase
-        .from('lesson_progress')
-        .upsert({
-          user_id: session.user.id,
-          lesson_id: lessonId,
-          generated_content: lessonContent
-        });
+      // Update or insert lesson progress
+      if (existingProgress) {
+        await supabase
+          .from('lesson_progress')
+          .update({
+            generated_content: lessonContent
+          })
+          .eq('id', existingProgress.id);
+      } else {
+        await supabase
+          .from('lesson_progress')
+          .insert({
+            user_id: session.user.id,
+            lesson_id: lessonId,
+            generated_content: lessonContent
+          });
+      }
 
     } catch (error) {
       console.error('Error:', error);
